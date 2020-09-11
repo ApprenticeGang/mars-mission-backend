@@ -8,9 +8,9 @@ const port = process.env.PORT || 3000;
 
 app.get('', async(request, response) => {
     response.json({
-        "API": "ok",
-        "nasaAPI": await checkNasaApi()? "ok": "error",
-        "database": await checkDatabaseConnection()? "ok": "error",
+        "API": "OK",
+        "nasaAPI": await checkNasaApi()? "OK": "ERROR",
+        "database": await checkDatabaseConnection()? "OK": "ERROR",
     });
 });
 
