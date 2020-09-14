@@ -2,7 +2,7 @@ import knex from "knex";
 
 const db = knex({
     client: 'pg',
-    connection: process.env.mars_mission
+    connection: process.env.DATABASE_URL
 });
 
 export const checkDatabaseConnection = async(): Promise<boolean> =>{
