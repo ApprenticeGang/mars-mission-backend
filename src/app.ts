@@ -4,7 +4,6 @@ import {checkNasaApi} from './nasa/nasaApi';
 import { checkDatabaseConnection } from "./database/database";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.get('', async(request, response) => {
     response.json({
@@ -14,4 +13,4 @@ app.get('', async(request, response) => {
     });
 });
 
-app.listen(port, () => { console.log(`server is running on port ${port}`) });
+export { app };
