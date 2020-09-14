@@ -5,7 +5,6 @@ import { checkDatabaseConnection } from "./database/database";
 import nunjucks from "nunjucks";
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.get('', async (request, response) => {
     response.json({
@@ -31,5 +30,6 @@ app.get("/home", (request, response) => {
 });
 
 
-//Listen on Port 
-app.listen(port, () => { console.log(`Server running on ${port}`) });
+
+export { app };
+
