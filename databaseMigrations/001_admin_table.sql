@@ -8,5 +8,4 @@ CREATE TABLE admin (
 
 )
 
-INSERT INTO admin (email)
-VALUES ('email@email.com');\q
+
