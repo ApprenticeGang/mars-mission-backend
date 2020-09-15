@@ -3,6 +3,7 @@ import * as database from "./database/database";
 import supertest from "supertest";
 import { app } from "./app";
 import { mocked } from "ts-jest/utils";
+import { response } from "express";
 
 jest.mock("./nasa/nasaApi");
 jest.mock("./database/database");
@@ -49,3 +50,15 @@ describe("The status page", () => {
         done();
     });
 });
+
+
+
+describe ("the home page", () => {
+    it ("return response ok if it loads", async done => {
+
+        const response = await request.get("/home");
+        expect(response.status).toBe(200)
+        done();
+    
+    })
+})
