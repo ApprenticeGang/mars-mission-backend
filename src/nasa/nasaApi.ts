@@ -9,13 +9,21 @@ export const checkNasaApi = async(): Promise<boolean> => {
 }
 
 interface RoverImage {
-    img_src: string
+    imgSource: string;
 }
+
+// interface PhotoData {
+//     imageSource: string
+// }
 
 export async function getRoverImages(roverName: string): Promise<RoverImage[]> {
     const sol = 100
     const url = (`${BASE_URL}/rovers/${roverName}/photos?sol=${sol}&api_key=${NASA_API_KEY}`)
     const apiResponse = await fetch(url);
     const jsonResponse = await apiResponse.json();
-    return jsonResponse.photos.map((photo: RoverImage) => photo.img_src);
+    return jsonResponse.photos.map((photoData: { img_src: any; }) => {
+        return {
+            imageSource: photoData.img_src
+        }
+    });
 }
