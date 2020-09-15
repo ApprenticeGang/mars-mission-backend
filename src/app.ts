@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from 'express';
-import {checkNasaApi, GetRoverImages} from './nasa/nasaApi';
+import {checkNasaApi, getRoverImages} from './nasa/nasaApi';
 import { checkDatabaseConnection } from "./database/database";
 import nunjucks from "nunjucks";
 
@@ -24,9 +24,8 @@ app.get('', async(request, response) => {
 
 
 app.get("/api/rovers/:name/images", async (request, response) => {
-    
     const roverName = request.params.name;
-    const images = await GetRoverImages(roverName);
+    const images = await getRoverImages(roverName);
     response.json(images);
 })
 
