@@ -1,19 +1,11 @@
 import "dotenv/config";
 import express from 'express';
-import { checkNasaApi } from './nasa/nasaApi';
+import {checkNasaApi, getRoverImages} from './nasa/nasaApi';
 import { checkDatabaseConnection } from "./database/database";
 import nunjucks from "nunjucks";
 
 const app = express();
-
-
-app.get('', async (request, response) => {
-    response.json({
-        "API": "OK",
-        "nasaAPI": await checkNasaApi() ? "OK" : "ERROR",
-        "database": await checkDatabaseConnection() ? "OK" : "ERROR",
-    });
-});
+const NASA_API_KEY =  process.env.NASA_API_KEY;
 
 //Nunjucks
 const PATH_TO_TEMPLATES = "./templates";
@@ -22,6 +14,20 @@ nunjucks.configure(PATH_TO_TEMPLATES, {
     express: app
 });
 
+app.get('', async(request, response) => {
+    response.json({
+        "API": "OK",
+        "nasaAPI": await checkNasaApi() ? "OK" : "ERROR",
+        "database": await checkDatabaseConnection() ? "OK" : "ERROR",
+    });
+});
+
+
+app.get("/api/rovers/:name/images", async (request, response) => {
+    const roverName = request.params.name;
+    const images = await getRoverImages(roverName);
+    response.json(images);
+})
 
 app.get("/home", (request, response) => {
     const model = {
@@ -30,6 +36,4 @@ app.get("/home", (request, response) => {
     response.render('index.html', model);
 });
 
-
 export { app };
-
