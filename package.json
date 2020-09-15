@@ -2,7 +2,7 @@
   "name": "mars-mission-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/start.js",
   "scripts": {
     "dev": "babel-node -r ts-node/register ./src/app.ts",
     "build": "tsc",
@@ -33,7 +33,10 @@
     "jest": "26.4.2",
     "@types/jest": "26.0.13",
     "ts-jest": "26.3.0",
-    "supertest": "4.0.2"
+    "supertest": "4.0.2",
+    "eslint": "7.9.0",
+    "@typescript-eslint/eslint-plugin": "4.1.0",
+    "@typescript-eslint/parser": "4.1.0"
   },
   "jest": {
     "preset": "ts-jest",
