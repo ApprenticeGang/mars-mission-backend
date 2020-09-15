@@ -1,10 +1,13 @@
 import "dotenv/config";
 import express from 'express';
-import {checkNasaApi} from './nasa/nasaApi';
+import {checkNasaApi, GetRoverImages} from './nasa/nasaApi';
+import fetch from "node-fetch";
 import { checkDatabaseConnection } from "./database/database";
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const NASA_API_KEY =  process.env.NASA_API_KEY;
 
 app.get('', async(request, response) => {
     response.json({
@@ -14,4 +17,11 @@ app.get('', async(request, response) => {
     });
 });
 
+app.get("/api/rovers/:name/images", async (request, response) => {
+    const roverName = request.params.name;
+    const images = await GetRoverImages(roverName);
+    response.json(images);
+})
+
 app.listen(port, () => { console.log(`server is running on port ${port}`) });
+
