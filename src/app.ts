@@ -24,6 +24,7 @@ app.get('', async(request, response) => {
 
 
 app.get("/api/rovers/:name/images", async (request, response) => {
+    
     const roverName = request.params.name;
     const images = await GetRoverImages(roverName);
     response.json(images);
