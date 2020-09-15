@@ -51,7 +51,13 @@ describe("The status page", () => {
     });
 });
 
-
+describe ("the image selector page", () => {
+    it("should return OK if it loads", async done => {
+        const response = await request.get("/api/rovers/spirit/images");
+        expect(response.status).toBe(200)
+        done();
+    })
+})
 
 describe ("the home page", () => {
     it ("return response ok if it loads", async done => {

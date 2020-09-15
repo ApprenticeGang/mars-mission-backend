@@ -37,5 +37,3 @@ app.get("/home", (request, response) => {
 });
 
 export { app };
-
-
