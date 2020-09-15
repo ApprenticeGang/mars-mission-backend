@@ -1,15 +1,30 @@
 import knex from "knex";
+import  { Admin } from '../userManager'
 
-const db = knex({
+export const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
 });
 
-export const checkDatabaseConnection = async(): Promise<boolean> =>{
-    try{
+export const checkDatabaseConnection = async (): Promise<boolean> => {
+    try {
         await db.raw("SELECT 1 AS db_is_up");
         return true;
-    }catch{
+    } catch{
         return false;
     }
 }
+
+
+export const addAdmin = (admin: Admin) => {
+    return db
+    .insert({email: admin.email, salt: admin.salt, password: admin.hashed_password}).into('admin')
+}
+
+
+//NOT FINISHED YET
+// export const getAdminByEmail = (email: string) => {
+//     return db("admin")
+//         .where('email', email)
+//         .select()
+//         .first() }

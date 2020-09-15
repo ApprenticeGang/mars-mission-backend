@@ -51,8 +51,6 @@ describe("The status page", () => {
     });
 });
 
-
-
 describe ("the home page", () => {
     it ("return response ok if it loads", async done => {
 
@@ -60,5 +58,16 @@ describe ("the home page", () => {
         expect(response.status).toBe(200)
         done();
     
-    })
-})
+    });
+});
+
+describe ("the add admin page", () => {
+    it ("return response success if post is successfully", async done => {
+
+        const response = await request.get("/admin/editors/new");
+        expect(response.status).toBe(200)
+        done();
+    
+    });
+
+});
