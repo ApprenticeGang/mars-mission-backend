@@ -29,7 +29,6 @@ app.get("/api/rovers/:name/images", async (request, response) => {
     response.json(images);
 })
 
-app.listen(port, () => { console.log(`server is running on port ${port}`) });
 app.get("/home", (request, response) => {
     const model = {
         message: "Admin Site"
