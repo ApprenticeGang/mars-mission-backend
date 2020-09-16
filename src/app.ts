@@ -38,7 +38,6 @@ nunjucks.configure(PATH_TO_TEMPLATES, {
     express: app
 });
 
-
 app.get('', async(request, response) => {
     response.json({
         "API": "OK",
@@ -61,6 +60,12 @@ app.get("/home", (request, response) => {
     response.render('index.html', model);
 });
 
+app.get("/admin/editors/new", async (request, response) => {
+    const model = {
+        message: "Admin Site"
+    }
+    response.render('adminEditor.html', model);
+})
 
 app.post("/admin/editors/new", async (request, response) => {
     const email = request.body.email;
