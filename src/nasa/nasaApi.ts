@@ -12,6 +12,7 @@ interface RoverImage {
     imgSource: string;
 }
 
+
 export async function getRoverImages(roverName: string): Promise<RoverImage[]> {
     const sol = 100
     const url = (`${BASE_URL}/rovers/${roverName}/photos?sol=${sol}&api_key=${NASA_API_KEY}`)

@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<form method="post" action="/admin/editors/new" >
+    <label for="id">Email</label>
+    <input id="email" type="string" name="email" />
+
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" />
+
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
