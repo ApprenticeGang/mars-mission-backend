@@ -8,7 +8,9 @@
     "build": "tsc",
     "start": "node .",
     "test": "jest ./src",
-    "test:coverage": "jest ./src --coverage"
+    "test:coverage": "jest ./src --coverage",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint --fix ./src/**/*.ts"
   },
   "author": "",
   "license": "ISC",
@@ -35,7 +37,10 @@
     "jest": "26.4.2",
     "@types/jest": "26.0.13",
     "ts-jest": "26.3.0",
-    "supertest": "4.0.2"
+    "supertest": "4.0.2",
+    "eslint": "7.9.0",
+    "@typescript-eslint/parser": "4.1.1",
+    "@typescript-eslint/eslint-plugin": "4.1.1"
   },
   "jest": {
     "preset": "ts-jest",
