@@ -12,9 +12,6 @@ interface RoverImage {
     imgSource: string;
 }
 
-// interface PhotoData {
-//     imageSource: string
-// }
 
 export async function getRoverImages(roverName: string): Promise<RoverImage[]> {
     const sol = 100
