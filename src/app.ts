@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express, { response } from 'express';
-import { checkNasaApi } from './nasa/nasaApi';
+import {checkNasaApi, getRoverImages} from './nasa/nasaApi';
 import { checkDatabaseConnection } from "./database/database";
 import nunjucks from "nunjucks";
 import crypto from "crypto";
@@ -8,6 +8,7 @@ import { request } from "http";
 import { addNewAdmin } from "./userManager";
 
 const app = express();
+const NASA_API_KEY =  process.env.NASA_API_KEY;
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,14 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // ))
 
-app.get('', async (request, response) => {
-    response.json({
-        "API": "OK",
-        "nasaAPI": await checkNasaApi() ? "OK" : "ERROR",
-        "database": await checkDatabaseConnection() ? "OK" : "ERROR",
-    });
-});
-
 //Nunjucks
 const PATH_TO_TEMPLATES = "./templates";
 nunjucks.configure(PATH_TO_TEMPLATES, {
@@ -46,13 +39,27 @@ nunjucks.configure(PATH_TO_TEMPLATES, {
 });
 
 
+app.get('', async(request, response) => {
+    response.json({
+        "API": "OK",
+        "nasaAPI": await checkNasaApi() ? "OK" : "ERROR",
+        "database": await checkDatabaseConnection() ? "OK" : "ERROR",
+    });
+});
+
+
+app.get("/api/rovers/:name/images", async (request, response) => {
+    const roverName = request.params.name;
+    const images = await getRoverImages(roverName);
+    response.json(images);
+})
+
 app.get("/home", (request, response) => {
     const model = {
         message: "Admin Site"
     }
     response.render('index.html', model);
 });
-
 
 
 app.post("/admin/editors/new", async (request, response) => {
@@ -87,4 +94,3 @@ app.post("/admin/editors/new", async (request, response) => {
 //     }))
 
 export { app };
-

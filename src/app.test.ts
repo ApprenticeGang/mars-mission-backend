@@ -10,6 +10,7 @@ jest.mock("./database/database");
 
 const mockCheckNasaApi = mocked(nasaApi.checkNasaApi);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
+const mockGetRoverImages = mocked(nasaApi.getRoverImages);
 
 const mockAddAdmin = mocked(database.addAdmin);
 
@@ -53,9 +54,19 @@ describe("The status page", () => {
     });
 });
 
-describe("the home page", () => {
-    it("return response ok if it loads", async done => {
 
+describe ("the image selector page", () => {
+    it("should return OK if it loads", async done => {
+        mockGetRoverImages.mockReturnValue(Promise.resolve([]));
+
+        const response = await request.get("/api/rovers/:name/images");
+        expect(response.status).toBe(200)
+        done();
+    })
+})
+
+describe ("the home page", () => {
+    it ("return response ok if it loads", async done => {
         const response = await request.get("/home");
         expect(response.status).toBe(200)
         done();
