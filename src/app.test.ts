@@ -54,7 +54,6 @@ describe("The status page", () => {
     });
 });
 
-
 describe ("the image selector page", () => {
     it("should return OK if it loads", async done => {
         mockGetRoverImages.mockReturnValue(Promise.resolve([]));
@@ -106,4 +105,9 @@ describe("the add admin route", () => {
         done();
     });
 
+    it ("return response ok if it loads", async done => {
+        const response = await request.get("/admin/editors/new");
+        expect(response.status).toBe(200)
+        done();
+    });
 });
