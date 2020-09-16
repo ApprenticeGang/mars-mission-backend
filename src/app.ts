@@ -55,21 +55,18 @@ app.get("/home", (request, response) => {
 
 
 
-app.get("/admin/editors/new", (request, response) => {
-    return (
-        response.render('addAdmin.html')
-
-    )
-});
-
 app.post("/admin/editors/new", async (request, response) => {
-    const loginInfoEmail = request.body.email;
-    const loginInfoPassword = request.body.password;
-    console.log(request.body);
-    await addNewAdmin(loginInfoEmail, loginInfoPassword)
-   
+    const email = request.body.email;
+    const password = request.body.password;
+    if (!email || email === "") {
+        return response.status(400).send("Please enter a valid email")
+    }
+    if (!password || password === "") {
+        return response.status(400).send("Please enter a valid password")
+    }
+    await addNewAdmin(email, password)
+   return response.send("okay")
 
-    response.send('success')
 });
 
 

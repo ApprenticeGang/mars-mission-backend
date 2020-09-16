@@ -16,8 +16,8 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
 }
 
 
-export const addAdmin = (admin: Admin) => {
-    return db
+export const addAdmin = async(admin: Admin):Promise<void> => {
+    await db
     .insert({email: admin.email, salt: admin.salt, password: admin.hashed_password}).into('admin')
 }
 

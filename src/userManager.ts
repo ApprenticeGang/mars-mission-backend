@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { StringLiteral } from "typescript";
-import { db} from "./database/database";
+import { db, addAdmin} from "./database/database";
+import { response, request } from "express";
 
 
 export interface Admin{
@@ -16,14 +17,16 @@ export const passwordFunction = (password: string , salt: string) => {
     .update(password)
     .digest('base64')
 };
+
 //I want this function to get the email and passwords and send it to the database after making it hashed up.
 export const addNewAdmin = (email: string, password: string) => {
     const lengthOfSalt = 10;
     const salt = crypto.randomBytes(lengthOfSalt).toString('base64');
     const hashedValue = passwordFunction(password, salt)
-    return db('admin')
-        .insert({email: email, salt: salt, hashed_password: hashedValue })
+    return addAdmin({email:email, salt:salt, hashed_password:hashedValue})
+        
 };
+
 
 
 
