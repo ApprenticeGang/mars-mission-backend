@@ -2,7 +2,7 @@
   "name": "mars-mission-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/start.js",
   "scripts": {
     "dev": "babel-node -r ts-node/register ./src/start.ts",
     "build": "tsc",
