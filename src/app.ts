@@ -61,10 +61,7 @@ app.get("/home", (request, response) => {
 });
 
 app.get("/admin/editors/new", async (request, response) => {
-    const model = {
-        message: "Admin Site"
-    }
-    response.render('adminEditor.html', model);
+    response.render('adminEditor.html');
 })
 
 app.post("/admin/editors/new", async (request, response) => {
