@@ -17,7 +17,7 @@
     height: 100%;
     display: block;
     margin: 0 auto;
-    background-color: red;
+    background-color: black;
 }
 
 .logo_container{
@@ -41,15 +41,15 @@
 }
 
 .navigation{
-    float: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     height: 100%;
 }
 
 .navigation a{
-    height: 100%;
-    display: table;
-    float: left;
     padding: 0px 20px;
+    color: white;
 }
 
 .navigation a:last-child{
