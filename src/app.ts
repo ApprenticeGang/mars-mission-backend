@@ -6,6 +6,7 @@ import {getRoverImages} from "./services/nasaService";
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 
+require('express-async-errors');
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -22,11 +23,36 @@ app.get('', async(request, response) => {
     response.json(status);
 });
 
+app.get("/test", async (res, rep) => {
+    throw Error("Oh Dear :(");
+});
+app.use((err:any, req:any, res:any, next:any) => {
+    if (err.message) {
+        res.status(500);
+        res.json({error: err.message});
+    }
+    next(err)
+})
 
 app.get("/api/rovers/:name/images", async (request, response) => {
+    // console.log("hello")
+
     const roverName = request.params.name;
     const images = await getRoverImages(roverName);
+    // console.log("hello 1")
+
+    if (!images) {
+        // console.log("oh no an error")
+        throw new Error('500: ApiError')
+    }
     response.json(images);
+})
+app.use((err:any, req:any, res:any, next:any) => {
+    if (err.message) {
+        res.status(500);
+        res.json({error: err.message});
+    }
+    next(err)
 })
 
 app.get("/home", (request, response) => {
