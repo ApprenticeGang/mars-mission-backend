@@ -1,12 +1,8 @@
 ﻿import fetch from "node-fetch";
+import {buildUrl, QueryParameter} from "../helpers/urlHelper";
 
 const nasaApiKey = process.env.NASA_API_KEY || "";
 const baseUrl = "https://api.nasa.gov/mars-photos/api/v1";
-
-interface QueryParameter {
-    name: string;
-    value: string;
-}
 
 interface RoverApiData {
     name: string;
@@ -39,8 +35,7 @@ export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]>
 
 const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Promise<T> => {
     queryParameters.push({ name: "api_key", value: nasaApiKey });
-    const queryString = queryParameters.join("&");
-    const url = `${baseUrl}/${path}?${queryString}`;
+    const url = buildUrl(baseUrl, path, queryParameters);
     
     const response = await fetch(url);
     
