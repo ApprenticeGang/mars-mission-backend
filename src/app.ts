@@ -8,7 +8,6 @@ import {createEditor} from "./services/authService";
 import sassMiddleware from "node-sass-middleware";
 
 const app = express();
-const port = process.env['PORT'] || 3001;
 app.use(express.urlencoded({ extended: true }));
 
 const srcPath = __dirname + "/../stylesheets";
