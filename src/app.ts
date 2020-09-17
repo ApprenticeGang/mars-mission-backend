@@ -33,7 +33,11 @@ app.get("/home", (request, response) => {
     response.render('index.html');
 });
 
-app.get("/admin/editors/new", (request, response) => {
+app.get("/admin/sign-in", async (request, response) => {
+    response.render('adminSignIn.html');
+})
+
+app.get("/admin/editors/new", async (request, response) => {
     response.render('adminEditor.html');
 })
 
