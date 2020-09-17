@@ -1,17 +1,30 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="/site.css"/>
     <title>Admin</title>
 </head>
 
 <body>
-    <header>
-        <nav>
+    <div class="header">
+        <div class="inner_header">
+            <div class="logo_container">
+                <h1>ADMIN<span>PAGE</span></h1>
+            </div>
+
+            <ul class="navigation">
+                <a href="/home"><li>Home</li></a>
+                <a href="/admin/editors/new"><li>Sign Up</li></a>
+                <a href="/admin/sign-in"><li>Sign In</li></a>
+            </ul>
+        </div>
+    </div>
+        <!-- <nav>
             <a href="/home">Home</a>
             <a href="/admin/editors/new">Sign Up</a>
             <a href="/admin/sign-in">Sign In</a>
-        </nav>
-    </header>
+        </nav> -->
+    <!-- </header> -->
     <main>
       
         {% block content %}{% endblock %} 

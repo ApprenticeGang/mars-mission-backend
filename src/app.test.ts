@@ -84,6 +84,7 @@ describe ("the home page", () => {
     });
 });
 
+
 describe("the add admin route", () => {
     it("should return 400 if email is missing", async done => {
         const response = await request
