@@ -53,7 +53,7 @@
       "./src/**/*"
     ],
     "coveragePathIgnorePatterns": [
-      "./src/nasa/nasaApi.ts",
+      "./src/nasa/nasaApiClient.ts",
       "./src/database/database.ts",
       "./src/start.ts"
     ],

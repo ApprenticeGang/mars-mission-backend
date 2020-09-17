@@ -1,7 +1,13 @@
 import knex from "knex";
-import  { Admin } from '../userManager'
+import {Editor} from "../models/databaseModels";
 
-export const db = knex({
+interface NewEditor {
+    email: string;
+    salt: string;
+    hashedPassword: string;
+}
+
+const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
 });
@@ -15,16 +21,11 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
     }
 }
 
-
-export const addAdmin = async(admin: Admin):Promise<void> => {
+export const insertEditor = async(editor: NewEditor): Promise<void> => {
     await db
-    .insert({email: admin.email, salt: admin.salt, hashed_password: admin.hashed_password}).into('admin')
+        .insert({
+            email: editor.email,
+            salt: editor.salt,
+            hashed_password: editor.hashedPassword})
+        .into<Editor>('admin');
 }
-
-
-//NOT FINISHED YET
-// export const getAdminByEmail = (email: string) => {
-//     return db("admin")
-//         .where('email', email)
-//         .select()
-//         .first() }
