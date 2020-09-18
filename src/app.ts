@@ -5,11 +5,25 @@ import {getStatus} from "./services/statusService";
 import {getRoverImages} from "./services/nasaService";
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
+import sassMiddleware from "node-sass-middleware";
 
 require('express-async-errors');
 const app = express();
-
 app.use(express.urlencoded({ extended: true }));
+
+const srcPath = __dirname + "/../stylesheets";
+const destPath = __dirname + "/../public";
+app.use(
+    sassMiddleware({
+        src: srcPath,
+        dest: destPath,
+        debug: true,
+        outputStyle: 'compressed',
+        prefix: '',
+    }),
+    //no src
+    express.static('public')
+);
 
 //Nunjucks
 const pathToTemplates = "./templates";
@@ -46,6 +60,7 @@ app.get("/api/rovers/:name/images", async (request, response) => {
         throw new Error('500: ApiError')
     }
     response.json(images);
+<<<<<<< HEAD
 })
 app.use((err:any, req:any, res:any, next:any) => {
     if (err.message) {
@@ -54,30 +69,33 @@ app.use((err:any, req:any, res:any, next:any) => {
     }
     next(err)
 })
+=======
+});
+>>>>>>> 945a251131d451a74f093ed338d950d3bdcda9ca
 
 app.get("/home", (request, response) => {
     response.render('index.html');
 });
 
-app.get("/admin/sign-in", async (request, response) => {
+app.get("/admin/sign-in", (request, response) => {
     response.render('adminSignIn.html');
-})
+});
 
-app.get("/admin/editors/new", async (request, response) => {
+app.get("/admin/editors/new", (request, response) => {
     response.render('adminEditor.html');
-})
+});
 
 app.post("/admin/editors/new", async (request, response) => {
     const { email, password } = request.body as NewEditorRequest;
 
     if (!email || email === "") {
-        return response.status(400).send("Please enter a valid email")
+        return response.status(400).send("Please enter a valid email");
     }
     if (!password || password === "") {
-        return response.status(400).send("Please enter a valid password")
+        return response.status(400).send("Please enter a valid password");
     }
-    await createEditor(email, password)
-    return response.send("okay")
+    await createEditor(email, password);
+    return response.send("okay");
 });
 
 export { app };

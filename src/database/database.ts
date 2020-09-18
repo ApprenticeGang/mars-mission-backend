@@ -16,10 +16,10 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
     try {
         await db.raw("SELECT 1 AS db_is_up");
         return true;
-    } catch{
+    } catch {
         return false;
     }
-}
+};
 
 export const insertEditor = async(editor: NewEditor): Promise<void> => {
     await db
@@ -28,4 +28,4 @@ export const insertEditor = async(editor: NewEditor): Promise<void> => {
             salt: editor.salt,
             hashed_password: editor.hashedPassword})
         .into<Editor>('admin');
-}
+};
