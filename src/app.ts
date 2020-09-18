@@ -5,10 +5,24 @@ import {getStatus} from "./services/statusService";
 import {getRoverImages} from "./services/nasaService";
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
+import sassMiddleware from "node-sass-middleware";
 
 const app = express();
-
 app.use(express.urlencoded({ extended: true }));
+
+const srcPath = __dirname + "/../stylesheets";
+const destPath = __dirname + "/../public";
+app.use(
+    sassMiddleware({
+        src: srcPath,
+        dest: destPath,
+        debug: true,
+        outputStyle: 'compressed',
+        prefix: '',
+    }),
+    //no src
+    express.static('public')
+);
 
 //Nunjucks
 const pathToTemplates = "./templates";
