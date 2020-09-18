@@ -1,9 +1,10 @@
 {% extends "_base.html" %}
 
 {% block content %}
-
-<form method="post" action="/admin/sign-in" >
-    <p>Sign In</p>
+<section>
+<form method="post" action="/admin/sign-in" class="manage">
+    <h2>Log In</h2>
+    <br>
     <label for="email">Email</label>
     <input id="email" type="email" name="email" required/>
 
@@ -13,5 +14,5 @@
 
     <button type="submit">Sign In</button>
 </form>
-
+</section>
 {% endblock %}
