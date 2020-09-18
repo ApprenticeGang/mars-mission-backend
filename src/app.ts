@@ -58,6 +58,7 @@ app.post("/admin/editors/new", async (request, response) => {
     return response.send("okay")
 });
 
+/* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
     if (err.message) {
         res.status(404);
