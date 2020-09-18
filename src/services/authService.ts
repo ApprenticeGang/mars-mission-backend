@@ -3,12 +3,12 @@ import {insertEditor} from "../database/database";
 
 const lengthOfSalt = 10;
 
-const getHashedPassword = (password: string , salt: string): string => {
+const getHashedPassword = (password: string, salt: string): string => {
     const valueToHash = password + salt;
     return crypto
         .createHash('sha256')
         .update(valueToHash)
-        .digest('base64')
+        .digest('base64');
 };
 
 const createSalt = (): string => {
