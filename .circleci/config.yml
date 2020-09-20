@@ -26,6 +26,7 @@ jobs:
       - attach_workspace:
           at: ~/mars-mission
       - setup_remote_docker
+      - run: npm run build
       - aws-ecr/build-and-push-image:
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
