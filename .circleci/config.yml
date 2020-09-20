@@ -19,7 +19,7 @@ jobs:
           root: .
           paths:
               - .
-  deploy:
+  build:
     executor: node-executor
     steps:
       - attach_workspace:
@@ -27,15 +27,17 @@ jobs:
       - aws-ecr/build-and-push-image:
           repo: "${AWS_RESOURCE_NAME_PREFIX}"
           tag: "${CIRCLE_SHA1}"
-      - aws-ecs/deploy-service-update:
-          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
-          cluster-name: "${AWS_RESOURCE_NAME_PREFIX}"
-          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
           
 workflows:
   on_commit:
     jobs:
       - test
-      - deploy:
+      - build:
           requires:
             - test
+      - aws-ecs/deploy-service-update:
+          requires:
+            - build
+          family: "${AWS_RESOURCE_NAME_PREFIX}-service"
+          cluster-name: "${AWS_RESOURCE_NAME_PREFIX}"
+          container-image-name-updates: "container=${AWS_RESOURCE_NAME_PREFIX}-service,tag=${CIRCLE_SHA1}"
