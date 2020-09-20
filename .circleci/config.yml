@@ -16,9 +16,9 @@ jobs:
       - run: npm run test:coverage
       - run: npm run lint
       - persist_to_workspace:
-        root: .
-        paths:
-          - .
+          root: .
+          paths:
+              - .
   deploy:
     executor: node-executor
     steps:
@@ -37,5 +37,5 @@ workflows:
     jobs:
       - test
       - deploy:
-          - requires:
-              -test
+          requires:
+            - test
