@@ -1,0 +1,7 @@
+﻿.circleci
+.git
+.idea
+coverage
+databaseMigrations
+node_modules
+src
