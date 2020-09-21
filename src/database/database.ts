@@ -1,5 +1,5 @@
 import knex from "knex";
-import {Editor} from "../models/databaseModels";
+import { Editor } from "../models/databaseModels";
 
 interface NewEditor {
     email: string;
@@ -21,11 +21,22 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
     }
 }
 
-export const insertEditor = async(editor: NewEditor): Promise<void> => {
+export const insertEditor = async (editor: NewEditor): Promise<void> => {
     await db
         .insert({
             email: editor.email,
             salt: editor.salt,
-            hashed_password: editor.hashedPassword})
+            hashed_password: editor.hashedPassword
+        })
         .into<Editor>('admin');
 }
+
+export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
+    return db('admin')
+        .select()
+        .from<Editor>("admin")
+        .where("email", email)
+        .first();
+};
+
+
