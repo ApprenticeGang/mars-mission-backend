@@ -17,7 +17,7 @@ interface PhotoApiData {
     sol: number
     id: number;
     earth_date: string;
-    camera    : string;
+    camera: string;
     full_name: string;
     imageUrl: string;
     roverName: string;

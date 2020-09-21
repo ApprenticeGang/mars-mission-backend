@@ -63,7 +63,7 @@ describe("The status page", () => {
 
 describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
-        mockGetRoverPhotos.mockResolvedValue([ { img_src: "https://test-url" } ]);
+        mockGetRoverPhotos.mockResolvedValue([ { img_src: "https://test-url", sol: 0, id: 0, earth_date: "https://test-url", camera: "https://test-url", full_name: "https://test-url", imageUrl: "https://test-url", roverName: "https://test-url"} ]);
 
         const response = await request.get("/api/rovers/:name/images");
         expect(response.status).toBe(200);
