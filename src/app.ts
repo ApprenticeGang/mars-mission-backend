@@ -68,12 +68,6 @@ app.get('', async (request, response) => {
 });
 
 
-app.get("/api/rovers/:name/images", async (request, response) => {
-    const roverName = request.params.name;
-    const images = await getRoverImages(roverName);
-    response.json(images);
-})
-
 app.get("/home", (request, response) => {
     response.render('index.html');
 });
