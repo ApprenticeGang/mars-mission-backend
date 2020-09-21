@@ -30,7 +30,7 @@ export const insertEditor = async (editor: NewEditor): Promise<void> => {
         })
         .into<Editor>('admin');
 
-}
+};
 
 export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
     return db('admin')

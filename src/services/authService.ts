@@ -35,11 +35,10 @@ export const matchHash = async (email: string, password: string): Promise<Editor
     }
 
     const hashedValue = getHashedPassword(password, adminResult.salt);
-    console.log(hashedValue, adminResult.hashed_password)
+    console.log(hashedValue, adminResult.hashed_password);
     if (hashedValue == adminResult.hashed_password) {
         return adminResult;
-    }
-    else {
+    } else {
         return false;
     }
 };
