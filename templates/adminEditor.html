@@ -2,15 +2,19 @@
 
 {% block content %}
 
-<form method="post" action="/admin/editors/new" >
-    <p>Add new editor</p>
+<section>
+<form method="post" action="/admin/editors/new" class="manage">
+    <h2>Add New Admin</h2>
+
     <label for="email">Email</label>
+
     <input id="email" type="email" name="email" required/>
 
     <label for="password">Password</label>
     <input id="password" type="password" name="password" required/>
 
     <button type="submit">Submit</button>
-</form>
 
+</form>
+</section>
 {% endblock %}

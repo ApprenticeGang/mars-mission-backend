@@ -4,12 +4,13 @@ import { Editor } from "../models/databaseModels";
 
 const lengthOfSalt = 10;
 
+
 export const getHashedPassword = (password: string, salt: string): string => {
     const valueToHash = password + salt;
     return crypto
         .createHash('sha256')
         .update(valueToHash)
-        .digest('base64')
+        .digest('base64');
 };
 
 const createSalt = (): string => {

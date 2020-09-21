@@ -56,6 +56,7 @@ describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
         mockGetRoverPhotos.mockResolvedValue([{ img_src: "https://test-url" }]);
         const response = await request.get("/api/rovers/:name/images");
+
         expect(response.status).toBe(200)
         const images = response.body as RoverImage[];
         expect(images.length).toBe(1);
@@ -67,10 +68,11 @@ describe("the image selector page", () => {
 describe("the home page", () => {
     it("return response ok if it loads", async done => {
         const response = await request.get("/home");
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(200);
         done();
     });
 });
+
 
 describe("the add admin route", () => {
     it("should return 400 if email is missing", async done => {
@@ -79,7 +81,7 @@ describe("the add admin route", () => {
             .send("password=password")
             .set("Accept", "x-www-form-urlencoded");
         expect(response.status).toBe(400);
-        expect(response.text).toBe("Please enter a valid email")
+        expect(response.text).toBe("Please enter a valid email");
         done();
     });
 
@@ -89,30 +91,30 @@ describe("the add admin route", () => {
             .send("email=email")
             .set("Accept", "x-www-form-urlencoded");
         expect(response.status).toBe(400);
-        expect(response.text).toBe("Please enter a valid password")
+        expect(response.text).toBe("Please enter a valid password");
         done();
     });
 
     it("should return 200 if request is valid", async done => {
-        mockAddAdmin.mockReturnValue(Promise.resolve())
+        mockAddAdmin.mockReturnValue(Promise.resolve());
         const response = await request
             .post('/admin/editors/new')
             .send("email=email&password=password")
             .set("Accept", "x-www-form-urlencoded");
         expect(response.status).toBe(200);
-        expect(response.text).toBe("okay")
+        expect(response.text).toBe("okay");
         done();
     });
 
     it("return response ok if it loads", async done => {
         const response = await request.get("/admin/editors/new");
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(200);
         done();
     });
 
     it("return response ok if it loads", async done => {
         const response = await request.get("/admin/sign-in");
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(200);
         done();
     });
 });

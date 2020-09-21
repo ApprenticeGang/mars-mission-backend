@@ -16,10 +16,10 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
     try {
         await db.raw("SELECT 1 AS db_is_up");
         return true;
-    } catch{
+    } catch {
         return false;
     }
-}
+};
 
 export const insertEditor = async (editor: NewEditor): Promise<void> => {
     await db
@@ -29,6 +29,7 @@ export const insertEditor = async (editor: NewEditor): Promise<void> => {
             hashed_password: editor.hashedPassword
         })
         .into<Editor>('admin');
+
 }
 
 export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
@@ -38,5 +39,3 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
         .where("email", email)
         .first();
 };
-
-

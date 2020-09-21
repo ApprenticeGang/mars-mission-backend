@@ -23,7 +23,7 @@ describe("The URL Helper", () => {
         const path = "/path";
         const queryParams = [
             { name: "api_key", value: "my-api-key" },
-        ]
+        ];
 
         const url = buildUrl(baseUrl, path, queryParams);
 
@@ -35,7 +35,7 @@ describe("The URL Helper", () => {
         const queryParams = [
             { name: "sol", value: "100" },
             { name: "api_key", value: "my-api-key" },
-        ]
+        ];
 
         const url = buildUrl(baseUrl, path, queryParams);
 
