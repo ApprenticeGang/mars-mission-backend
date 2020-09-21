@@ -7,7 +7,7 @@ const router = express.Router()
 
 
 // define the home page route
-router.get("/rovers/:name/images", async (request :any, response: any) => {
+router.get("/rovers/:name/images", async (request, response) => {
     const roverName = request.params.name;
     const images = await getRoverImages(roverName);
     response.json(images);
