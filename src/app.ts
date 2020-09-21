@@ -46,3 +46,4 @@ app.use('/admin', editorRoutes);
 
 
 
+export { app };
