@@ -14,7 +14,7 @@ interface RoversApiData {
 
 interface PhotoApiData {
     img_src: string;
-    sol: number
+    sol: number;
     id: number;
     earth_date: string;
     camera: string;
@@ -33,7 +33,7 @@ export const getRovers = async (): Promise<RoverApiData[]> => {
     return apiData.rovers;
 };
 
-export const getRoverPhotos = async (roverName : string): Promise<PhotoApiData[]> => {
+export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]> => {
     const queryParameters = [
         { name: "sol", value: "1000" }
     ];
@@ -53,5 +53,3 @@ const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Pro
     
     return await response.json() as T;
 };
-
-

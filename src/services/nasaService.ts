@@ -28,6 +28,3 @@ export const getRoverImages = async (roverName: string): Promise<RoverImage[]> =
         };
     });
 };
-
-
-
