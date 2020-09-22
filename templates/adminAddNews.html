@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<section>
+<form method="post" action="/editors/articles/new" class="manage">
+    <h2>Add News Article </h2>
+
+    <label for="image_url">Image Url</label>
+    <input id="image_url" type="image_url" name="image_url" required/>
+
+    <label for="title">Title</label>
+    <input id="title" type="title" name="title" required/>
+
+    <label for="summary">Summary</label>
+    <input id="summary" type="summary" name="summary" required/>
+
+    <label for="article_url">Article Url</label>
+    <input id="article_url" type="article_url" name="article_url" required/>
+
+    <label for="publish_date">Publish Date</label>
+    <input id="publish_date" type="date" name="publish_date" required/>
+
+
+
+    <button type="submit">Submit</button>
+
+</form>
+</section>
+{% endblock %}
