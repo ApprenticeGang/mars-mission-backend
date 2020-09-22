@@ -18,6 +18,7 @@ router.get("/rovers/:name/images", async (request, response) => {
 router.get("/articles", async(request, response) => {
     const sqlResult = await getArticles();
     response.json(sqlResult);
+    console.log(sqlResult);
 });
 
 

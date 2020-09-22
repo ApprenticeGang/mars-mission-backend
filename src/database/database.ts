@@ -1,4 +1,5 @@
 import knex from "knex";
+import {QueryBuilder} from "knex";
 import {Editor} from "../models/databaseModels";
 
 interface NewEditor {
@@ -30,10 +31,7 @@ export const insertEditor = async(editor: NewEditor): Promise<void> => {
         .into<Editor>('admin');
 };
 
-export const getArticles=()=>{
-    return db('news')
-    .select('*')
-}
-    
-   
 
+export const getArticles=(): QueryBuilder =>{
+    return db.select("*").from('news');
+};

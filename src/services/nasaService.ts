@@ -1,4 +1,3 @@
-import Knex from "knex";
 import {getRoverPhotos, getRovers} from "../nasa/nasaApiClient";
 
 export interface RoverImage {
