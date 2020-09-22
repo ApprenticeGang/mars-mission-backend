@@ -5,7 +5,7 @@ CREATE TABLE images (
     sol VARCHAR(6),
     cameraName VARCHAR(10),
     cameraFullName VARCHAR(255),
-    imageUrl VARCHAR(255),
+    imageUrl VARCHAR(255) NOT NULL,
     earthDate DATE,
     roverName VARCHAR(255)
 
