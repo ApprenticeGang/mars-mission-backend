@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS rovers;
+DROP TABLE IF EXISTS timeline;
 
-CREATE TABLE rovers(
+CREATE TABLE timeline(
 id SERIAL PRIMARY KEY,
 rover_name VARCHAR(255),
 image_url VARCHAR(255),
 date DATE,
-rover_info TEXT 
-)
+timeline_entry TEXT 
+);
