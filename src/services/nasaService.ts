@@ -12,13 +12,13 @@ export const checkNasaApi = async(): Promise<boolean> => {
         console.error(e);
         return false;
     }
-}
+};
 
 export const getRoverImages = async (roverName: string): Promise<RoverImage[]> => {
     const apiImages = await getRoverPhotos(roverName);
     return apiImages.map(apiImage => { 
         return {
             imageUrl: apiImage.img_src
-        }
+        };
     });
-}
+};

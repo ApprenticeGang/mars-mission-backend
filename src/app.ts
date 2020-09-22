@@ -6,13 +6,29 @@ import {getRoverImages} from "./services/nasaService";
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import 'express-async-errors';
+import sassMiddleware from "node-sass-middleware";
+import {router as apiRoutes}  from "./apiRoutes"
+import {router as editorRoutes} from "./editorRoutes"
 
 const app = express();
-
 app.use(express.urlencoded({ extended: true }));
 
+const srcPath = __dirname + "/../stylesheets";
+const destPath = __dirname + "/../public";
+app.use(
+    sassMiddleware({
+        src: srcPath,
+        dest: destPath,
+        debug: true,
+        outputStyle: 'compressed',
+        prefix: '',
+    }),
+    //no src
+    express.static('public')
+);
+
 //Nunjucks
-const pathToTemplates = "./templates";
+export const pathToTemplates = "./templates";
 nunjucks.configure(pathToTemplates, {
     autoescape: true,
     express: app
@@ -27,26 +43,12 @@ app.get("/home", (request, response) => {
     response.render('index.html');
 });
 
-app.get("/admin/sign-in", async (request, response) => {
-    response.render('adminSignIn.html');
-})
+app.use('/api', apiRoutes);
 
-app.get("/admin/editors/new", async (request, response) => {
-    response.render('adminEditor.html');
-})
+app.use('/admin', editorRoutes);
 
-app.post("/admin/editors/new", async (request, response) => {
-    const { email, password } = request.body as NewEditorRequest;
 
-    if (!email || email === "") {
-        return response.status(400).send("Please enter a valid email")
-    }
-    if (!password || password === "") {
-        return response.status(400).send("Please enter a valid password")
-    }
-    await createEditor(email, password)
-    return response.send("okay")
-});
+
 
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
@@ -58,3 +60,4 @@ app.use((err:any, req:any, res:any, next:any) => {
 })
 
 export { app };
+

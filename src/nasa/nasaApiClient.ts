@@ -24,7 +24,7 @@ export const getRovers = async (): Promise<RoverApiData[]> => {
     const apiData = await get<RoversApiData>("/rovers");
 
     return apiData.rovers;
-}
+};
 
 export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]> => {
     const queryParameters = [
@@ -32,7 +32,7 @@ export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]>
     ];
     const apiData = await get<RoverPhotosApiData>(`/rovers/${roverName}/photos`, queryParameters);
     return apiData.photos;
-}
+};
 
 const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Promise<T> => {
     queryParameters.push({ name: "api_key", value: nasaApiKey });
@@ -45,4 +45,4 @@ const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Pro
     }
     
     return await response.json() as T;
-}
+};
