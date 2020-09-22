@@ -1,17 +1,10 @@
 import "dotenv/config";
 import express from 'express';
 import nunjucks from "nunjucks";
-import { getRoverImages } from "./services/nasaService";
-import { NewEditorRequest } from "./models/requestModels";
-import { createEditor } from "./services/authService";
 import passport from "passport";
 import passportLocal from "passport-local";
 import { matchHash } from "./services/authService";
-import { execArgv } from "process";
 import {getStatus} from "./services/statusService";
-import {getRoverImages} from "./services/nasaService";
-import {NewEditorRequest} from "./models/requestModels";
-import {createEditor} from "./services/authService";
 import 'express-async-errors';
 import sassMiddleware from "node-sass-middleware";
 import {router as apiRoutes}  from "./apiRoutes"
@@ -53,7 +46,6 @@ passport.use(new LocalStrategy({
     }
 ));
 
-
 passport.serializeUser(function (user, done) {
     done(null, user);
 });
@@ -67,7 +59,6 @@ app.get('', async (request, response) => {
     response.json(status);
 });
 
-
 app.get("/home", (request, response) => {
     response.render('index.html');
 });
@@ -75,6 +66,11 @@ app.get("/home", (request, response) => {
 app.use('/api', apiRoutes);
 
 app.use('/admin', editorRoutes);
+
+app.post("/admin/sign-in", passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/admin/sign-in',
+}));
 
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
@@ -84,10 +80,5 @@ app.use((err:any, req:any, res:any, next:any) => {
     }
     next(err)
 })
-
-app.post("/admin/sign-in", passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/admin/sign-in',
-}));
 
 export { app };
