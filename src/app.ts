@@ -74,15 +74,9 @@ app.use('/api', apiRoutes);
 
 app.use('/admin', editorRoutes);
 
-
-
-
-
 app.post("/admin/sign-in", passport.authenticate('local', {
     successRedirect: '/home',
     failureRedirect: '/admin/sign-in',
 }));
-
-
 
 export { app };

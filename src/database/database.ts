@@ -48,7 +48,13 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
         .first();
 };
 
-export const addNewsArticle = (newArticle: NewArticle): Promise<void> => {
+export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
     return db('news')
-    .insert({image_url:newArticle.imageUrl, title:newArticle.title, summary:newArticle.summary, article_url:newArticle.articleUrl, publish_date:newArticle.publishDate});
+        .insert({
+            image_url: newArticle.imageUrl,
+            title: newArticle.title,
+            summary: newArticle.summary,
+            article_url: newArticle.articleUrl,
+            publish_date: newArticle.publishDate
+        });
 };
