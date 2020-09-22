@@ -24,7 +24,9 @@ export const getRoverImages = async (roverName: string): Promise<RoverImage[]> =
             sol: apiImage.sol,
             imageUrl: apiImage.img_src,  
             cameraDetails: apiImage.camera,
-            earth_date: apiImage.earth_date
+            earth_date: apiImage.earth_date,
+            rover: apiImage.rover
+              
         };
     });
 };
