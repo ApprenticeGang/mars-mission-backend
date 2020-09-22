@@ -22,6 +22,7 @@ interface RoverPhotosApiData {
 
 export const getRovers = async (): Promise<RoverApiData[]> => {
     const apiData = await get<RoversApiData>("/rovers");
+
     return apiData.rovers;
 };
 
