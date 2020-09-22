@@ -46,9 +46,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 },
     async (email, password, done) => {
-        console.log(email, password)
         const adminMember = await matchHash(email, password);
-        console.log(adminMember)
         return done(null, adminMember);
     }
 ));
