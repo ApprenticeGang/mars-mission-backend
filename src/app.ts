@@ -47,9 +47,6 @@ app.use('/api', apiRoutes);
 
 app.use('/admin', editorRoutes);
 
-
-
-
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
     if (err.message) {
