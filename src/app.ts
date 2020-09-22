@@ -1,6 +1,13 @@
 import "dotenv/config";
 import express from 'express';
 import nunjucks from "nunjucks";
+import { getRoverImages } from "./services/nasaService";
+import { NewEditorRequest } from "./models/requestModels";
+import { createEditor } from "./services/authService";
+import passport from "passport";
+import passportLocal from "passport-local";
+import { matchHash } from "./services/authService";
+import { execArgv } from "process";
 import {getStatus} from "./services/statusService";
 import {getRoverImages} from "./services/nasaService";
 import {NewEditorRequest} from "./models/requestModels";
@@ -34,10 +41,32 @@ nunjucks.configure(pathToTemplates, {
     express: app
 });
 
-app.get('', async(request, response) => {
+const LocalStrategy = passportLocal.Strategy;
+app.use(passport.initialize())
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+},
+    async (email, password, done) => {
+        const adminMember = await matchHash(email, password);
+        return done(null, adminMember);
+    }
+));
+
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+/* istanbul ignore next */
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
+
+app.get('', async (request, response) => {
     const status = await getStatus();
     response.json(status);
 });
+
 
 app.get("/home", (request, response) => {
     response.render('index.html');
@@ -56,5 +85,9 @@ app.use((err:any, req:any, res:any, next:any) => {
     next(err)
 })
 
-export { app };
+app.post("/admin/sign-in", passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/admin/sign-in',
+}));
 
+export { app };
