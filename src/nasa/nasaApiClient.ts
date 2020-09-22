@@ -33,8 +33,6 @@ interface PhotoApiData {
     id: number;
     earth_date: string;
     camera: Camera;
-    full_name: string;
-    imageUrl: string;
     rover: Rover;
 }
 

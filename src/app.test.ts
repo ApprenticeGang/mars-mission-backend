@@ -5,9 +5,9 @@ import { app } from "./app";
 import { mocked } from "ts-jest/utils";
 import {StatusSummary} from "./services/statusService";
 import {RoverImage} from "./services/nasaService";
-import {Camera} from "./nasa/nasaApiClient"
-import {Rover} from "./nasa/nasaApiClient"
+import testData from "./testData/testdata.json"
 
+// const testData = require("./testData/testdata.json");
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
@@ -66,14 +66,13 @@ describe("The status page", () => {
 
 describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
-        mockGetRoverPhotos.mockResolvedValue([ { img_src: "https://test-url", sol: 0, id: 0, earth_date: "https://test-url", camera: {id: 0, name: "https://test-url", rover_id: 0, full_name: "https://test-url"} , full_name: "https://test-url", imageUrl: "https://test-url", rover: {id: 0, name: "https://test-url", landing_date: "https://test-url", launch_date: "https://test-url", status: "https://test-url"} } ]);
-
-        const response = await request.get("/api/rovers/:name/images");
+        mockGetRoverPhotos.mockResolvedValue(testData);
+    
+        const response = await request.get("/api/rovers/spirit/images")
         expect(response.status).toBe(200);
-        
         const images = response.body as RoverImage[];
-        expect(images.length).toBe(1);
-        expect(images[0].imageUrl).toBe("https://test-url");
+        expect(images.length).toBe(2);
+        expect(images[0].imageUrl).toBe("http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG");
         done();
     });
 });
@@ -132,3 +131,8 @@ describe("the add admin route", () => {
         done();
     });
 });
+
+
+
+
+// 
