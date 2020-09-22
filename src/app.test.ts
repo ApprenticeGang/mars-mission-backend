@@ -129,3 +129,15 @@ describe("the add admin route", () => {
         done();
     });
 });
+
+describe("the article route", () => {
+    it("should return OK if it loads", async done => {
+        const response = await request
+        .get("/api/articles")
+        expect(response.status).toBe(200);
+        done()
+    })
+
+})
+
+

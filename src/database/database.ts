@@ -29,3 +29,11 @@ export const insertEditor = async(editor: NewEditor): Promise<void> => {
             hashed_password: editor.hashedPassword})
         .into<Editor>('admin');
 };
+
+export const getArticles=()=>{
+    return db('news')
+    .select('*')
+}
+    
+   
+
