@@ -29,17 +29,18 @@ router.post("/editors/new", async (request, response) => {
     return response.send("okay");
 });
 
-router.get("/editors/articles/new", (request, response) => {
-    response.render('adminEditor.html');
+router.get("/articles/new", (request, response) => {
+    response.render('adminAddNews.html');
 });
 
-router.post("/editors/articles/new", async (request, response) => {
+
+router.post("/articles/new", async (request, response) => {
     const newArticle = request.body;
     const result = await addNewsArticle(newArticle);
     const model = {
         articles: result,
     }
-    response.render("/editors/articles/new")
+    response.render('adminAddNews.html')
 });
 
 
