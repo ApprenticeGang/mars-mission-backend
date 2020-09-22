@@ -139,5 +139,3 @@ describe("the article route", () => {
     })
 
 })
-
-
