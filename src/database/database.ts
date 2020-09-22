@@ -8,11 +8,11 @@ interface NewEditor {
 }
 
 interface NewArticle {
-    image_url: string;
+    imageUrl: string;
     title: string;
     summary: string;
-    article_url: string;
-    publish_date: string;
+    articleUrl: string;
+    publishDate: string;
 }
 
 const db = knex({
@@ -50,5 +50,5 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
 
 export const addNewsArticle = (newArticle: NewArticle)=>{
     return db('news')
-    .insert({ image_url:newArticle.image_url, title:newArticle.title, summary:newArticle.summary, article_url:newArticle.article_url, publish_date:newArticle.publish_date })
+    .insert({ image_url:newArticle.imageUrl, title:newArticle.title, summary:newArticle.summary, article_url:newArticle.articleUrl, publish_date:newArticle.publishDate })
 };
