@@ -17,4 +17,4 @@ export const buildUrl = (baseUrl: string, path: string, queryParameters: QueryPa
         .join("&");
     
     return `${baseUrl}/${path}?${queryString}`;
-}
+};
