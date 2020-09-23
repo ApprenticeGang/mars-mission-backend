@@ -12,11 +12,16 @@ import {getStatus} from "./services/statusService";
 import sassMiddleware from "node-sass-middleware";
 import {router as apiRoutes}  from "./apiRoutes"
 import {router as editorRoutes} from "./editorRoutes"
-
-
+import cookieparser from "cookie-parser";
+import expresssession from "express-session";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieparser());
+app.use(expresssession({
+    secret: "secret"
+}));
 
 const srcPath = __dirname + "/../stylesheets";
 const destPath = __dirname + "/../public";
@@ -41,6 +46,7 @@ nunjucks.configure(pathToTemplates, {
 
 export const LocalStrategy = passportLocal.Strategy;
 app.use(passport.initialize())
+app.use(passport.session());
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -50,8 +56,6 @@ passport.use(new LocalStrategy({
         return done(null, adminMember);
     }
 ));
-
-
 passport.serializeUser(function (user, done) {
     done(null, user);
 });
@@ -67,17 +71,15 @@ app.get('', async (request, response) => {
     response.json(status);
 });
 
-
 app.get("/home", (request, response) => {
-    response.render('index.html');
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+    return response.render('index.html');
 });
-
 app.use('/api', apiRoutes);
 
 app.use('/admin', editorRoutes);
-
-
-
 
 app.post("/admin/sign-in", passport.authenticate('local', {
     successRedirect: '/home',

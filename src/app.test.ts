@@ -66,11 +66,53 @@ describe("the image selector page", () => {
 });
 
 describe("the home page", () => {
-    it("return response ok if it loads", async done => {
+    it("returns redirect if admin is not logged in", async done => {
         const response = await request.get("/home");
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(302);
+        expect(response.header.location).toBe("/admin/sign-in");
         done();
     });
+
+    // it("should redirect if admin is not logged in", async done => {
+    //     mockgetAdminByEmail.mockResolvedValue(undefined);
+    //     const response = await request
+    //     expect(response.status).toBe(200);
+    //     done();
+    // });
+
+    // it("should redirect to log in route if admin is not logged in", async done => {
+    //     mockgetAdminByEmail.mockResolvedValue(undefined);
+    //     const response = await request
+    //         .post('/admin/sign-in')
+    //         .send("email=dsadsadsa&password=password4")
+    //         .set("Accept", "x-www-form-urlencoded");
+    //     expect(response.redirect).toBe(true)
+    //     expect(response.header.location).toBe("/admin/sign-in")
+    //     done();
+    // });
+
+    // it("should redirect to log in route if admin is not logged in", async done => {
+    //     const editor = { id: 10, email: "john4.doe@gmail.com", salt: "yhzvD1+chPZCfg==", hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ=" };
+    //     mockgetAdminByEmail.mockResolvedValue(editor);
+    //     const response = await request
+    //         .post('/admin/sign-in')
+    //         .send("email=email&password=password4")
+    //         .set("Accept", "x-www-form-urlencoded");
+    //     expect(response.redirect).toBe(true)
+    //     expect(response.header.location).toBe("/home")
+    //     done();
+    // });
+
+    // it("should redirect to log in route if admin is not logged in", async done => {
+    //     const response = await request
+    //         .post('/admin/editors/new')
+    //         .send("")
+    //         .set("Accept", "x-www-form-urlencoded");
+    //     expect(response.status).toBe(302);
+    //     expect(response.header.location).toBe("/admin/sign-in")
+    //     done();
+    // });
+
 });
 
 
@@ -106,9 +148,9 @@ describe("the add admin route", () => {
         done();
     });
 
-    it("return response ok if it loads", async done => {
+    it("redirects if admin is not logged in ", async done => {
         const response = await request.get("/admin/editors/new");
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(302);
         done();
     });
 

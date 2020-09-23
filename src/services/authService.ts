@@ -27,7 +27,6 @@ export const createEditor = (email: string, password: string): Promise<void> => 
     });
 };
 
-
 export const matchHash = async (email: string, password: string): Promise<Editor | boolean> => {
     const adminResult = await getAdminByEmail(email);
     if (!adminResult) {
