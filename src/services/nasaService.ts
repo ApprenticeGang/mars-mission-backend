@@ -1,6 +1,4 @@
 import {getRoverPhotos, getRovers} from "../nasa/nasaApiClient";
-import {Camera} from "../nasa/nasaApiClient"
-import {Rover} from "../nasa/nasaApiClient"
 
 export interface RoverImage{
     imageUrl: string;  
