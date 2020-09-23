@@ -8,13 +8,13 @@ export interface RoverImage {
     cameraDetails: {
         name: string;
         fullName: string;
-    },
+    };
     rover: {
         name: string;
         landingDate: string;
         launchDate: string;
         status: string;
-    }
+    };
 }
 
 export const checkNasaApi = async(): Promise<boolean> => {
