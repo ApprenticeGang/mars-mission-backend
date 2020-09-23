@@ -38,11 +38,6 @@ router.get("/rovers/:name", async (request, response) => {
     response.render('editRovers.html');
 });
 
-router.post("/rovers/:name", async (request, response) => {
-    const name = request.params.name
-    response.render('editRovers.html');
-});
-
 
 export {router};
 
