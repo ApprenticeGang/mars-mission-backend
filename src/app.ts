@@ -7,8 +7,9 @@ import { matchHash } from "./services/authService";
 import {getStatus} from "./services/statusService";
 import 'express-async-errors';
 import sassMiddleware from "node-sass-middleware";
-import {router as apiRoutes}  from "./apiRoutes"
-import {router as editorRoutes} from "./editorRoutes"
+import {router as apiRoutes}  from "./apiRoutes";
+import {router as editorRoutes} from "./editorRoutes";
+import cors from "cors";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +27,12 @@ app.use(
     //no src
     express.static('public')
 );
-
+//cors
+app.use(cors({
+    origin: ["http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com/",
+            "https://d2000sgepwjw55.cloudfront.net/",
+            "http://localhost:3000"]
+}));
 //Nunjucks
 export const pathToTemplates = "./templates";
 nunjucks.configure(pathToTemplates, {
