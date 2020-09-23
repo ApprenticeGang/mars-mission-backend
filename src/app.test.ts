@@ -140,7 +140,16 @@ describe("the add admin route", () => {
             expect(response.status).toBe(200);
             done();
         });
-});
+
+        it("return response ok if it loads", async done => {
+            const response = await request
+                .post('/admin/rovers/:roverName/images')
+                .send("image_url=imageUrl&rover_name=roverName&date=date")
+                .set("Accept", "x-www-form-urlencoded");
+            expect(response.status).toBe(200);
+            done();
+        });
+})
 
 
 describe("the article route", () => {
@@ -158,7 +167,7 @@ describe("the article route", () => {
         const article = response.body as Articles[];
         expect(article.length).toBe(1);
         done()
-    })
+    });
 });
 
 
