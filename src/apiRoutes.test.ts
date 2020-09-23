@@ -5,15 +5,20 @@ import {mocked} from "ts-jest/utils";
 import * as nasaApiClient from "./nasa/nasaApiClient";
 import testImageApiData from "./testData/testdata.json"
 import * as articles from "./database/articles";
+import * as timeline from "./database/timeline";
 import {Article} from "./database/articles";
+import {RoverName} from "./models/requestModels";
+import {TimelineItem} from "./database/timeline";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/articles");
+jest.mock("./database/timeline");
 
 const request = supertest(app);
 
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockGetArticles = mocked(articles.getArticles);
+const mockGetTimelineForRover = mocked(timeline.getTimelineForRover);
 
 describe("API Routes", () => {
     
@@ -83,5 +88,35 @@ describe("API Routes", () => {
                 done()
             });
         });
+        
+        describe("timelines", () => {
+            
+            it("should return timelines from the database", async done => {
+                mockGetTimelineForRover.mockResolvedValue([
+                    {
+                        id: 1,
+                        rover_name: "spirit",
+                        image_url: "http://my-image.com",
+                        heading: "Launch Day!",
+                        timeline_entry: "Spirit got launched into space",
+                        date: "2010-08-06"
+                    }
+                ]);
+                
+                const response = await request.get("/api/rovers/spirit/timeline");
+                
+                expect(response.status).toBe(200);
+                const timelineItem = (response.body as TimelineItem[])[0];
+                expect(timelineItem).toStrictEqual({
+                    id: 1,
+                    roverName: "spirit",
+                    imageUrl: "http://my-image.com",
+                    heading: "Launch Day!",
+                    body: "Spirit got launched into space",
+                    date: "2010-08-06"
+                });
+                done();
+            });
+        })
     });
 });
