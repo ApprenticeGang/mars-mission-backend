@@ -3,6 +3,8 @@ import express, { response } from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import { request } from "http";
+import { addNewsArticle } from "./database/database";
+
 
 const router = express.Router()
 
@@ -35,6 +37,20 @@ router.get("/rovers", async (request, response) => {
 router.get("/rovers/:name", async (request, response) => {
     const name = request.params.name
     response.render('editRovers.html');
+});
+
+
+export {router};
+
+router.get("/articles/new", (request, response) => {
+    response.render('adminAddNews.html');
+});
+
+
+router.post("/articles/new", async (request, response) => {
+    const newArticle = request.body;
+    const result = await addNewsArticle(newArticle);
+    response.render('adminAddNews.html')
 });
 
 
