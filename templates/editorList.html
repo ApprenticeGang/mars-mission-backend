@@ -7,8 +7,11 @@
         <h2>Editors</h2>
         <ul>
             {% for editor in editors %}
-            <li>
-                <a href="/admin/editors/{{ editor.id}}/edit">{{ editor.email }}</a>
+            <li class="row">
+                <div>{{ editor.email }}</div>
+                <form method="post" action="/admin/editors/{{ editor.id }}/delete">
+                    <button type="submit">Delete</button>
+                </form>
             </li>
             {% endfor %}
         </ul>

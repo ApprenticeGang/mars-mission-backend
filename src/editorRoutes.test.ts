@@ -14,6 +14,7 @@ const request = supertest(app);
 const mockInsertEditor = mocked(editors.insertEditor);
 const mockGetEditorByEmail = mocked(editors.getEditorByEmail);
 const mockGetEditors = mocked(editors.getEditors);
+const mockDeleteEditor = mocked(editors.deleteEditorById);
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockInsertArticle = mocked(articles.insertArticle);
 
@@ -62,8 +63,8 @@ describe("admin routes", () => {
                     .post('/admin/editors/new')
                     .send("email=email&password=password")
                     .set("Accept", "x-www-form-urlencoded");
-                expect(response.status).toBe(200);
-                expect(response.text).toBe("okay");
+                expect(response.status).toBe(302);
+                expect(response.header.location).toBe("/admin/editors");
                 done();
             });
             
@@ -84,6 +85,19 @@ describe("admin routes", () => {
                     .set("Accept", "x-www-form-urlencoded");
                 expect(response.status).toBe(400);
                 expect(response.text).toBe("Please enter a valid password");
+                done();
+            });
+        });
+
+        describe("Delete Editor", () => {
+        
+            it("POST succeeds if editor exists", async done => {
+                mockDeleteEditor.mockResolvedValue();
+                
+                const response = await request.post("/admin/editors/1/delete");
+                
+                expect(response.status).toBe(302);
+                expect(response.header.location).toBe("/admin/editors");
                 done();
             });
         });

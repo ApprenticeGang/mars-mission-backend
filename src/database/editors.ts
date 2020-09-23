@@ -19,6 +19,13 @@ export const getEditors = async (): Promise<Editor[]> => {
         .from<Editor>("admin");
 };
 
+export const deleteEditorById = async (id: number): Promise<void> => {
+    await db
+        .delete()
+        .from<Editor>("admin")
+        .where("id", id);
+};
+
 export const getEditorByEmail = (email: string): Promise<Editor | undefined> => {
     return db('admin')
         .select()

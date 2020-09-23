@@ -6,7 +6,7 @@ import "dotenv/config";
 import {insertArticle} from "./database/articles";
 import {insertTimelineItem} from "./database/timeline";
 import passport from "passport";
-import {getEditors} from "./database/editors";
+import {deleteEditorById, getEditors} from "./database/editors";
 
 const router = express.Router();
 
@@ -42,7 +42,13 @@ router.post("/editors/new", async (request, response) => {
         return response.status(400).send("Please enter a valid password");
     }
     await createEditor(email, password);
-    return response.send("okay");
+    return response.redirect("/admin/editors");
+});
+
+router.post("/editors/:id/delete", async(request, response) => {
+    const id = parseInt(request.params.id);
+    await deleteEditorById(id);
+    return response.redirect("/admin/editors");
 });
 
 router.get("/articles/new", (request, response) => {
