@@ -1,6 +1,5 @@
 import crypto from "crypto";
-import { insertEditor, getAdminByEmail } from "../database/database";
-import { Editor } from "../models/databaseModels";
+import {Editor, getEditorByEmail, insertEditor} from "../database/editors";
 
 const lengthOfSalt = 10;
 
@@ -17,10 +16,10 @@ const createSalt = (): string => {
     return crypto.randomBytes(lengthOfSalt).toString('base64');
 };
 
-export const createEditor = (email: string, password: string): Promise<void> => {
+export const createEditor = async (email: string, password: string): Promise<void> => {
     const salt = createSalt();
     const hashedValue = getHashedPassword(password, salt);
-    return insertEditor({
+    await insertEditor({
         email: email,
         salt: salt,
         hashedPassword: hashedValue
@@ -28,8 +27,8 @@ export const createEditor = (email: string, password: string): Promise<void> => 
 };
 
 
-export const matchHash = async (email: string, password: string): Promise<Editor | boolean> => {
-    const adminResult = await getAdminByEmail(email);
+export const matchHash = async (email: string, password: string): Promise<Editor | false> => {
+    const adminResult = await getEditorByEmail(email);
     if (!adminResult) {
         return false;
     }

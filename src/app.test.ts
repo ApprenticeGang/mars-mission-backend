@@ -1,28 +1,35 @@
 ﻿import * as nasaApiClient from "./nasa/nasaApiClient";
 import * as database from "./database/database";
+import * as articles from "./database/articles";
+import * as editors from "./database/editors";
+import * as timeline from "./database/timeline";
 import supertest from "supertest";
 import { app } from "./app";
 import { mocked } from "ts-jest/utils";
 import { StatusSummary } from "./services/statusService";
 import { RoverImage } from "./services/nasaService";
-import testData from "./testData/testdata.json"
-import testArticelesData from "./testData/testDataArticles.json"
-import { Editor } from "./models/databaseModels";
-import {Articles} from "./database/database";
-import { convertToObject } from "typescript";
-import { addTimelineEvent } from "./database/database";
+import testImageApiData from "./testData/testdata.json"
+import {Article} from "./database/articles";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
+jest.mock("./database/articles");
+jest.mock("./database/editors");
+jest.mock("./database/photos");
+jest.mock("./database/timeline");
 
 const mockGetRovers = mocked(nasaApiClient.getRovers);
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
-const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
-const mockAddAdmin = mocked(database.insertEditor);
-const mockGetArticles = mocked(database.getArticles);
-const mockAddTimelineEvent = mocked(database.addTimelineEvent);
 
-const mockgetAdminByEmail = mocked(database.getAdminByEmail);
+const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
+
+const mockInsertEditor = mocked(editors.insertEditor);
+const mockGetEditorByEmail = mocked(editors.getEditorByEmail);
+
+const mockGetArticles = mocked(articles.getArticles);
+
+const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
+
 const request = supertest(app);
 
 describe("The status page", () => {
@@ -63,10 +70,10 @@ describe("The status page", () => {
 describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
 
-        mockGetRoverPhotos.mockResolvedValue(testData);
+        mockGetRoverPhotos.mockResolvedValue(testImageApiData);
         let response = await request.get("/api/rovers/spirit/images")
         expect(response.status).toBe(200);
-        mockGetRoverPhotos.mockResolvedValue(testData);
+        mockGetRoverPhotos.mockResolvedValue(testImageApiData);
 
         const images = response.body as RoverImage[];
         expect(images.length).toBe(2);
@@ -106,7 +113,7 @@ describe("the add admin route", () => {
     });
 
     it("should return 200 if request is valid", async done => {
-        mockAddAdmin.mockReturnValue(Promise.resolve());
+        mockInsertEditor.mockReturnValue(Promise.resolve());
         const response = await request
             .post('/admin/editors/new')
             .send("email=email&password=password")
@@ -155,22 +162,28 @@ describe("the article route", () => {
         done()
     });
     it("should return response ok when loading", async done =>{
-        mockGetArticles.mockResolvedValue(testArticelesData);
+        const testArticle = {
+            "id": 1,
+            "image_url": "this is an image url",
+            "title": "Test",
+            "summary": "This is a summart",
+            "article_url": "this is a url",
+            "publish_date": "2020-09-21T23:00:00.000Z"
+        };
+        mockGetArticles.mockResolvedValue([testArticle]);
         let response = await request.get("/api/articles")
-        const article = response.body as Articles[];
+        const article = response.body as Article[];
         expect(article.length).toBe(1);
         done()
     })
 });
 
 
-
-
 describe("the sigin admin route", () => {
 
     it("should return 200 if request is valid", async done => {
         const editor = { id: 10, email: "john4.doe@gmail.com", salt: "yhzvD1+chPZCfg==", hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ=" };
-        mockgetAdminByEmail.mockResolvedValue(editor);
+        mockGetEditorByEmail.mockResolvedValue(editor);
         const response = await request
             .post('/admin/sign-in')
             .send("email=email&password=password4")
@@ -181,7 +194,7 @@ describe("the sigin admin route", () => {
     });
 
     it("should return redirect if the email is wrong", async done => {
-        mockgetAdminByEmail.mockResolvedValue(undefined);
+        mockGetEditorByEmail.mockResolvedValue(undefined);
         const response = await request
             .post('/admin/sign-in')
             .send("email=dsadsadsa&password=password4")
@@ -193,7 +206,7 @@ describe("the sigin admin route", () => {
 
     it("should return redirect if the password is wrong", async done => {
         const editor = { id: 10, email: "john4.doe@gmail.com", salt: "yhzvD1+chPZCfg==", hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ=" };
-        mockgetAdminByEmail.mockResolvedValue(editor);
+        mockGetEditorByEmail.mockResolvedValue(editor);
         const response = await request
             .post('/admin/sign-in')
             .send("email=email&password=password4dasda")
@@ -240,17 +253,17 @@ describe("The admin timeline route", () =>{
         const response = await request
         .get('/admin/rovers/timeline/new')
         expect(response.status).toBe(200);
-            done()
+
+        done()
     });
     it("should return 200 if request is valid", async done => {
-        const timelineitem = { rover_name: "spirit", image_url: "www.thisisaurl.com", heading: "HEADING", timeline_entry: "TIMELINE ENTRY", date: "2020-09-09" };
-        mockAddTimelineEvent.mockResolvedValue(timelineitem);
+        mockInsertTimelineItem.mockResolvedValue();
         const response = await request
             .post('/admin/rovers/timeline/new')
             .send("rover_name=rover_name&image_url=image_url&heading=heading&timeline_entry=timeline_entry&date=date")
             .set("Accept", "x-www-form-urlencoded");
         expect(response.status).toBe(200)
-        // expect(response.header.location).toBe("/admin/rovers/timeline/new")
+
         done();
     });
 })

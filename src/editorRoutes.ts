@@ -1,10 +1,10 @@
 import "dotenv/config";
-import express, { response } from 'express';
+import express  from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import "dotenv/config";
-import { addNewsArticle } from "./database/database";
-import { addTimelineEvent } from "./database/database";
+import {insertArticle} from "./database/articles";
+import {insertTimelineItem} from "./database/timeline";
 
 const router = express.Router()
 
@@ -37,7 +37,7 @@ router.get("/articles/new", (request, response) => {
 
 router.post("/articles/new", async (request, response) => {
     const newArticle = request.body;
-    const result = await addNewsArticle(newArticle);
+    const result = await insertArticle(newArticle);
     response.render('adminAddNews.html')
 });
 
@@ -46,7 +46,7 @@ router.get("/rovers/timeline/new", (request, response) => {
 });
 router.post("/rovers/timeline/new", async (request, response) => {
     const newTimeline = request.body;
-    const result = await addTimelineEvent(newTimeline);
+    await insertTimelineItem(newTimeline);
     response.render('adminAddTimeline.html')
 });
 
