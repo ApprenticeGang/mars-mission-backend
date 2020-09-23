@@ -3,8 +3,8 @@ import * as database from "./database/database";
 import supertest from "supertest";
 import { app } from "./app";
 import { mocked } from "ts-jest/utils";
-import {StatusSummary} from "./services/statusService";
-import {RoverImage} from "./services/nasaService";
+import { StatusSummary } from "./services/statusService";
+import { RoverImage } from "./services/nasaService";
 import testData from "./testData/testdata.json"
 import { Editor } from "./models/databaseModels";
 
@@ -58,12 +58,9 @@ describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
 
         mockGetRoverPhotos.mockResolvedValue(testData);
-    
-        const response = await request.get("/api/rovers/spirit/images")
+        let response = await request.get("/api/rovers/spirit/images")
         expect(response.status).toBe(200);
-
-        mockGetRoverPhotos.mockResolvedValue([{ img_src: "https://test-url" }]);
-        const response = await request.get("/api/rovers/:name/images");
+        mockGetRoverPhotos.mockResolvedValue(testData);
 
         expect(response.status).toBe(200)
 
@@ -194,9 +191,4 @@ describe("the sigin admin route", () => {
         expect(response.status).toBe(400);
         done();
     });
-
-<<<<<<< HEAD
-=======
-
-});
->>>>>>> 40d4cf99d5944fc223ff327b9602b9d5b1b558a6
+});   
