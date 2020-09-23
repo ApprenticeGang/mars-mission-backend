@@ -1,7 +1,8 @@
 import "dotenv/config";
 import express from 'express';
-import {NewEditorRequest} from "./models/requestModels";
-import {createEditor} from "./services/authService";
+import { NewEditorRequest } from "./models/requestModels";
+import { createEditor } from "./services/authService";
+import { LocalStrategy } from "./app";
 import "dotenv/config";
 
 const router = express.Router()
@@ -28,4 +29,24 @@ router.post("/editors/new", async (request, response) => {
     return response.send("okay");
 });
 
-export {router};
+router.get("/admin/", async (request, response) => {
+    console.log(request.user)
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+});
+
+router.get("/home", async (request, response) => {
+    console.log(request.user)
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+});
+
+router.get("/admin/editors/new", async (request, response) => {
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+});
+
+export { router };

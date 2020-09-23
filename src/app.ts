@@ -39,7 +39,7 @@ nunjucks.configure(pathToTemplates, {
     express: app
 });
 
-const LocalStrategy = passportLocal.Strategy;
+export const LocalStrategy = passportLocal.Strategy;
 app.use(passport.initialize())
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -59,6 +59,8 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
     done(null, user);
 });
+
+exports.restrict
 
 app.get('', async (request, response) => {
     const status = await getStatus();
