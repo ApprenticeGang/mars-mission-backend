@@ -58,7 +58,8 @@
     "coveragePathIgnorePatterns": [
       "./src/nasa/nasaApiClient.ts",
       "./src/database/database.ts",
-      "./src/start.ts"
+      "./src/start.ts",
+      "./src/testData/testdata.json"
     ],
     "coverageThreshold": {
       "global": {
