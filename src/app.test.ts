@@ -123,6 +123,21 @@ describe("the add admin route", () => {
         expect(response.status).toBe(200);
         done();
     });
+
+        it("return response ok if it loads", async done => {
+            const response = await request.get("/admin/articles/new");
+            expect(response.status).toBe(200);
+            done();
+        });
+
+        it("return response ok if it loads", async done => {
+            const response = await request
+                .post('/admin/articles/new')
+                .send("image_url=imageUrl&title=title&summary=summary&article_url=articleUrl&publish_date=publishDate")
+                .set("Accept", "x-www-form-urlencoded");
+            expect(response.status).toBe(200);
+            done();
+        });
 });
 
 
