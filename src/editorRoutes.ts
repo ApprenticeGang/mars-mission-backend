@@ -4,6 +4,7 @@ import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import "dotenv/config";
 import { addNewsArticle } from "./database/database";
+import { addTimelineEvent } from "./database/database";
 
 const router = express.Router()
 
@@ -40,5 +41,13 @@ router.post("/articles/new", async (request, response) => {
     response.render('adminAddNews.html')
 });
 
+router.get("/rovers/timeline/new", (request, response) => {
+    response.render('adminAddTimeline.html');
+});
+router.post("/rovers/timeline/new", async (request, response) => {
+    const newTimeline = request.body;
+    const result = await addTimelineEvent(newTimeline);
+    response.render('adminAddTimeline.html')
+});
 
 export {router};

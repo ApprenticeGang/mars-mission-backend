@@ -1,0 +1,28 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<section>
+<form method="POST" action="/admin/rovers/timeline/new" class="manage">
+    <h2>Add Timeline Event </h2>
+
+    <label for="rover_name">Rover Name</label>
+    <input id="rover_name" type="text" name="rover_name" required/>
+
+    <label for="image_url">Image URL</label>
+    <input id="image_url" type="text" name="image_url" required/>
+
+    <label for="heading">Heading</label>
+    <input id="heading" type="text" name="heading" required/>
+
+    <label for="timeline_entry">Timeline Entry</label>
+    <input id="timeline_entry" type="text" name="timeline_entry" required/>
+
+    <label for="date">Date</label>
+    <input id="date" type="date" name="date" required/>
+
+    <button type="submit">Submit</button>
+
+</form>
+</section>
+{% endblock %}
