@@ -15,6 +15,14 @@ interface NewArticle {
     publishDate: string;
 }
 
+interface TimelineItem {
+    rover_name: string;
+    image_url: string;
+    heading: string;
+    timeline_entry: string;
+    date: string;
+}
+
 const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
@@ -70,5 +78,16 @@ export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
             summary: newArticle.summary,
             article_url: newArticle.articleUrl,
             publish_date: newArticle.publishDate
+        });
+};
+
+export const addTimelineEvent = async (timelineItem: TimelineItem): Promise<TimelineItem | undefined> => {
+    return db('timeline_entry')
+        .insert({
+            rover_name: timelineItem.rover_name,
+            image_url: timelineItem.image_url,
+            heading: timelineItem.heading,
+            timeline_entry: timelineItem.timeline_entry,
+            date: timelineItem.date
         });
 };
