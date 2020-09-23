@@ -59,7 +59,8 @@
       "./src/nasa/nasaApiClient.ts",
       "./src/database/database.ts",
       "./src/start.ts",
-      "./src/testData/testdata.json"
+      "./src/testData/testdata.json",
+      "./src/testData/testDataArticles.json"
     ],
     "coverageThreshold": {
       "global": {

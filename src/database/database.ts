@@ -1,5 +1,5 @@
 import knex from "knex";
-import { Editor } from "../models/databaseModels";
+import {Editor} from "../models/databaseModels";
 
 interface NewEditor {
     email: string;
@@ -48,6 +48,20 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
         .first();
 };
 
+
+export interface Articles{
+    id: number; 
+    image_url: string;
+    title: string; 
+    summary: string;
+    article_url: string;
+    publish_date: string;
+
+}
+
+export const getArticles=(): Promise<Articles[]> => {
+    return db.select("*").from<Articles>('news');
+};
 export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
     return db('news')
         .insert({

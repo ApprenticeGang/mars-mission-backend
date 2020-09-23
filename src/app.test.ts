@@ -6,8 +6,10 @@ import { mocked } from "ts-jest/utils";
 import { StatusSummary } from "./services/statusService";
 import { RoverImage } from "./services/nasaService";
 import testData from "./testData/testdata.json"
+import testArticelesData from "./testData/testDataArticles.json"
 import { Editor } from "./models/databaseModels";
-
+import {Articles} from "./database/database";
+import { convertToObject } from "typescript";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
@@ -16,6 +18,8 @@ const mockGetRovers = mocked(nasaApiClient.getRovers);
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
 const mockAddAdmin = mocked(database.insertEditor);
+const mockGetArticles = mocked(database.getArticles);
+
 const mockgetAdminByEmail = mocked(database.getAdminByEmail);
 const request = supertest(app);
 
@@ -61,8 +65,6 @@ describe("the image selector page", () => {
         let response = await request.get("/api/rovers/spirit/images")
         expect(response.status).toBe(200);
         mockGetRoverPhotos.mockResolvedValue(testData);
-
-        expect(response.status).toBe(200)
 
         const images = response.body as RoverImage[];
         expect(images.length).toBe(2);
@@ -141,6 +143,27 @@ describe("the add admin route", () => {
 });
 
 
+describe("the article route", () => {
+    it("should return OK if it loads", async done => {
+        mockGetArticles.mockResolvedValue([]);
+        mockCheckDatabaseConnection.mockResolvedValue(true);
+        const response = await request
+        .get("/api/articles")
+        expect(response.status).toBe(200);
+        done()
+    });
+    it("should return response ok when loading", async done =>{
+        mockGetArticles.mockResolvedValue(testArticelesData);
+        let response = await request.get("/api/articles")
+        const article = response.body as Articles[];
+        expect(article.length).toBe(1);
+        done()
+    })
+});
+
+
+
+
 describe("the sigin admin route", () => {
 
     it("should return 200 if request is valid", async done => {
@@ -206,4 +229,4 @@ describe("the sigin admin route", () => {
         expect(response.status).toBe(400);
         done();
     });
-});   
+});
