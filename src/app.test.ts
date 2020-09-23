@@ -5,7 +5,11 @@ import { app } from "./app";
 import { mocked } from "ts-jest/utils";
 import { StatusSummary } from "./services/statusService";
 import { RoverImage } from "./services/nasaService";
+import testData from "./testData/testdata.json"
+import testArticelesData from "./testData/testDataArticles.json"
 import { Editor } from "./models/databaseModels";
+import {Articles} from "./database/database";
+import { convertToObject } from "typescript";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
@@ -14,12 +18,9 @@ const mockGetRovers = mocked(nasaApiClient.getRovers);
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
 const mockAddAdmin = mocked(database.insertEditor);
-<<<<<<< HEAD
 const mockGetArticles = mocked(database.getArticles);
 
-=======
 const mockgetAdminByEmail = mocked(database.getAdminByEmail);
->>>>>>> 0cd64be08897ba530f1f9d6faaf05dee3a3ef9cc
 const request = supertest(app);
 
 describe("The status page", () => {
@@ -59,13 +60,15 @@ describe("The status page", () => {
 
 describe("the image selector page", () => {
     it("should return OK if it loads", async done => {
-        mockGetRoverPhotos.mockResolvedValue([{ img_src: "https://test-url" }]);
-        const response = await request.get("/api/rovers/:name/images");
 
-        expect(response.status).toBe(200)
+        mockGetRoverPhotos.mockResolvedValue(testData);
+        let response = await request.get("/api/rovers/spirit/images")
+        expect(response.status).toBe(200);
+        mockGetRoverPhotos.mockResolvedValue(testData);
+
         const images = response.body as RoverImage[];
-        expect(images.length).toBe(1);
-        expect(images[0].imageUrl).toBe("https://test-url");
+        expect(images.length).toBe(2);
+        expect(images[0].imageUrl).toBe("http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG");
         done();
     });
 });
@@ -122,6 +125,21 @@ describe("the add admin route", () => {
         expect(response.status).toBe(200);
         done();
     });
+
+        it("return response ok if it loads", async done => {
+            const response = await request.get("/admin/articles/new");
+            expect(response.status).toBe(200);
+            done();
+        });
+
+        it("return response ok if it loads", async done => {
+            const response = await request
+                .post('/admin/articles/new')
+                .send("image_url=imageUrl&title=title&summary=summary&article_url=articleUrl&publish_date=publishDate")
+                .set("Accept", "x-www-form-urlencoded");
+            expect(response.status).toBe(200);
+            done();
+        });
 });
 
 
@@ -133,13 +151,18 @@ describe("the article route", () => {
         .get("/api/articles")
         expect(response.status).toBe(200);
         done()
-<<<<<<< HEAD
     });
-});
-=======
+    it("should return response ok when loading", async done =>{
+        mockGetArticles.mockResolvedValue(testArticelesData);
+        let response = await request.get("/api/articles")
+        const article = response.body as Articles[];
+        expect(article.length).toBe(1);
+        done()
     })
+});
 
-})
+
+
 
 describe("the sigin admin route", () => {
 
@@ -206,7 +229,4 @@ describe("the sigin admin route", () => {
         expect(response.status).toBe(400);
         done();
     });
-
-
 });
->>>>>>> 0cd64be08897ba530f1f9d6faaf05dee3a3ef9cc

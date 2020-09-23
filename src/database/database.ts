@@ -1,11 +1,18 @@
 import knex from "knex";
-import {QueryBuilder} from "knex";
 import {Editor} from "../models/databaseModels";
 
 interface NewEditor {
     email: string;
     salt: string;
     hashedPassword: string;
+}
+
+interface NewArticle {
+    imageUrl: string;
+    title: string;
+    summary: string;
+    articleUrl: string;
+    publishDate: string;
 }
 
 const db = knex({
@@ -42,7 +49,7 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
 };
 
 
-interface Articles{
+export interface Articles{
     id: number; 
     image_url: string;
     title: string; 
@@ -54,4 +61,14 @@ interface Articles{
 
 export const getArticles=(): Promise<Articles[]> => {
     return db.select("*").from<Articles>('news');
+};
+export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
+    return db('news')
+        .insert({
+            image_url: newArticle.imageUrl,
+            title: newArticle.title,
+            summary: newArticle.summary,
+            article_url: newArticle.articleUrl,
+            publish_date: newArticle.publishDate
+        });
 };

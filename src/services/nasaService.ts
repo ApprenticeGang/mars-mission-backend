@@ -1,8 +1,9 @@
 import {getRoverPhotos, getRovers} from "../nasa/nasaApiClient";
 
-export interface RoverImage {
-    imageUrl: string;
+export interface RoverImage{
+    imageUrl: string;  
 }
+
 
 export const checkNasaApi = async(): Promise<boolean> => {
     try {
@@ -17,8 +18,14 @@ export const checkNasaApi = async(): Promise<boolean> => {
 export const getRoverImages = async (roverName: string): Promise<RoverImage[]> => {
     const apiImages = await getRoverPhotos(roverName);
     return apiImages.map(apiImage => { 
-        return {
-            imageUrl: apiImage.img_src
+        return {    
+            id: apiImage.id,
+            sol: apiImage.sol,
+            imageUrl: apiImage.img_src,  
+            cameraDetails: apiImage.camera,
+            earth_date: apiImage.earth_date,
+            rover: apiImage.rover
+              
         };
     });
 };
