@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const srcPath = __dirname + "/../stylesheets";
 const destPath = __dirname + "/../public";
+
 app.use(
     sassMiddleware({
         src: srcPath,
@@ -24,16 +25,15 @@ app.use(
         outputStyle: 'compressed',
         prefix: '',
     }),
-    //no src
     express.static('public')
 );
-//cors
+
 app.use(cors({
     origin: ["http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com/",
             "https://d2000sgepwjw55.cloudfront.net/",
             "http://localhost:3000"]
 }));
-//Nunjucks
+
 export const pathToTemplates = "./templates";
 nunjucks.configure(pathToTemplates, {
     autoescape: true,
@@ -65,24 +65,14 @@ app.get('', async (request, response) => {
     response.json(status);
 });
 
-app.get("/home", (request, response) => {
-    response.render('index.html');
-});
-
 app.use('/api', apiRoutes);
-
 app.use('/admin', editorRoutes);
-
-app.post("/admin/sign-in", passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/admin/sign-in',
-}));
 
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
     if (err.message) {
-        res.status(404);
-        res.json({error: err.message});
+        console.error(err.message);
+        res.status(500).end();
     }
     next(err)
 })

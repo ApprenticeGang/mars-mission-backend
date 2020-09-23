@@ -1,0 +1,20 @@
+﻿{% extends "_base.html" %}
+
+{% block content %}
+
+<section>
+    <div class="card">
+        <h2>Editors</h2>
+        <ul>
+            {% for editor in editors %}
+            <li class="row">
+                <div>{{ editor.email }}</div>
+                <form method="post" action="/admin/editors/{{ editor.id }}/delete">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}
