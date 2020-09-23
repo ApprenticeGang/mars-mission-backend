@@ -3,23 +3,23 @@ import {app} from "./app";
 import {RoverImage} from "./services/nasaService";
 import {mocked} from "ts-jest/utils";
 import * as nasaApiClient from "./nasa/nasaApiClient";
-import testImageApiData from "./testData/testdata.json"
+import testImageApiData from "./testData/testdata.json";
 import * as articles from "./database/articles";
+import * as timeline from "./database/timeline";
 import {Article} from "./database/articles";
+import {TimelineItem} from "./database/timeline";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/articles");
+jest.mock("./database/timeline");
 
 const request = supertest(app);
 
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockGetArticles = mocked(articles.getArticles);
+const mockGetTimelineForRover = mocked(timeline.getTimelineForRover);
 
 describe("API Routes", () => {
-    
-    describe("News", () => {
-        
-    });
     
     describe("Rover", () => {
         
@@ -28,7 +28,7 @@ describe("API Routes", () => {
             it("should return images from NASA", async (done) => {
                 mockGetRoverPhotos.mockResolvedValue(testImageApiData);
                 
-                let response = await request.get("/api/rovers/spirit/images")
+                const response = await request.get("/api/rovers/spirit/images");
                 
                 expect(response.status).toBe(200);
 
@@ -68,11 +68,11 @@ describe("API Routes", () => {
                 };
                 mockGetArticles.mockResolvedValue([testArticle]);
                 
-                const response = await request.get("/api/articles")
+                const response = await request.get("/api/articles");
                 
                 expect(response.status).toBe(200);
-                const articles = response.body as Article[];
-                expect(articles[0]).toStrictEqual({
+                const articleResponse = response.body as Article[];
+                expect(articleResponse[0]).toStrictEqual({
                     id: 1,
                     imageUrl: "this is an image url",
                     title: "Test",
@@ -80,7 +80,37 @@ describe("API Routes", () => {
                     articleUrl: "this is a url",
                     publishDate: "2020-09-21T23:00:00.000Z",
                 });
-                done()
+                done();
+            });
+        });
+        
+        describe("timelines", () => {
+            
+            it("should return timelines from the database", async done => {
+                mockGetTimelineForRover.mockResolvedValue([
+                    {
+                        id: 1,
+                        rover_name: "spirit",
+                        image_url: "http://my-image.com",
+                        heading: "Launch Day!",
+                        timeline_entry: "Spirit got launched into space",
+                        date: "2010-08-06"
+                    }
+                ]);
+                
+                const response = await request.get("/api/rovers/spirit/timeline");
+                
+                expect(response.status).toBe(200);
+                const timelineItem = (response.body as TimelineItem[])[0];
+                expect(timelineItem).toStrictEqual({
+                    id: 1,
+                    roverName: "spirit",
+                    imageUrl: "http://my-image.com",
+                    heading: "Launch Day!",
+                    body: "Spirit got launched into space",
+                    date: "2010-08-06"
+                });
+                done();
             });
         });
     });

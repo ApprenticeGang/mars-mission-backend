@@ -9,7 +9,7 @@ export interface Article {
     publish_date: string | null;
 }
 
-interface NewArticle {
+export interface NewArticle {
     imageUrl: string;
     title: string;
     summary: string;

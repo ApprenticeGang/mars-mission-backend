@@ -1,8 +1,8 @@
 ﻿import {db} from "./database";
 import {RoverName} from "../models/requestModels";
 
-interface TimelineItem {
-    id: string;
+export interface TimelineItem {
+    id: number;
     rover_name: RoverName;
     image_url: string | null;
     heading: string;
@@ -10,13 +10,21 @@ interface TimelineItem {
     date: string;
 }
 
-interface NewTimelineItem {
+export interface NewTimelineItem {
     roverName: RoverName;
     imageUrl: string;
     heading: string;
     body: string;
     date: string;
 }
+
+export const getTimelineForRover = async (roverName: RoverName): Promise<TimelineItem[]> => {
+    return db()
+        .select("*")
+        .from<TimelineItem>("timeline_entry")
+        .where("rover_name", roverName)
+        .orderBy("date", "desc");
+};
 
 export const insertTimelineItem = async (timelineItem: NewTimelineItem): Promise<void> => {
     await db()

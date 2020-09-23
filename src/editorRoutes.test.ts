@@ -41,7 +41,7 @@ describe("admin routes", () => {
         describe("List Editors", () => {
            
             it("GET returns 200", async done => {
-                mockGetEditors.mockResolvedValue([testEditor])
+                mockGetEditors.mockResolvedValue([testEditor]);
 
                 const response = await request.get("/admin/editors/");
                 expect(response.status).toBe(200);
@@ -117,8 +117,8 @@ describe("admin routes", () => {
                 .post('/admin/sign-in')
                 .send("email=email&password=password4")
                 .set("Accept", "x-www-form-urlencoded");
-            expect(response.redirect).toBe(true)
-            expect(response.header.location).toBe("/home")
+            expect(response.redirect).toBe(true);
+            expect(response.header.location).toBe("/home");
             done();
         });
 
@@ -128,8 +128,8 @@ describe("admin routes", () => {
                 .post('/admin/sign-in')
                 .send("email=dsadsadsa&password=password4")
                 .set("Accept", "x-www-form-urlencoded");
-            expect(response.redirect).toBe(true)
-            expect(response.header.location).toBe("/admin/sign-in")
+            expect(response.redirect).toBe(true);
+            expect(response.header.location).toBe("/admin/sign-in");
             done();
         });
 
@@ -140,8 +140,8 @@ describe("admin routes", () => {
                 .post('/admin/sign-in')
                 .send("email=email&password=password4dasda")
                 .set("Accept", "x-www-form-urlencoded");
-            expect(response.redirect).toBe(true)
-            expect(response.header.location).toBe("/admin/sign-in")
+            expect(response.redirect).toBe(true);
+            expect(response.header.location).toBe("/admin/sign-in");
             done();
         });
 
@@ -193,9 +193,9 @@ describe("admin routes", () => {
         describe("Add new Timeline Item", () => {
 
             it("GET returns 200", async done => {
-                const response = await request.get('/admin/rovers/timeline/new')
+                const response = await request.get('/admin/rovers/timeline/new');
                 expect(response.status).toBe(200);
-                done()
+                done();
             });
             
             it("POST returns 200", async done => {
@@ -204,7 +204,7 @@ describe("admin routes", () => {
                     .post('/admin/rovers/timeline/new')
                     .send("rover_name=rover_name&image_url=image_url&heading=heading&timeline_entry=timeline_entry&date=date")
                     .set("Accept", "x-www-form-urlencoded");
-                expect(response.status).toBe(200)
+                expect(response.status).toBe(200);
                 done();
             });
         });
