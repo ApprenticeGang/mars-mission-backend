@@ -5,6 +5,7 @@ import {createEditor} from "./services/authService";
 import { request } from "http";
 
 import { addNewsArticle } from "./database/database";
+import { addTimelineEvent } from "./database/database";
 
 const router = express.Router()
 
@@ -50,6 +51,14 @@ router.post("/articles/new", async (request, response) => {
     response.render('adminAddNews.html')
 });
 
+router.get("/rovers/timeline/new", (request, response) => {
+    response.render('adminAddTimeline.html');
+});
+router.post("/rovers/timeline/new", async (request, response) => {
+    const newTimeline = request.body;
+    const result = await addTimelineEvent(newTimeline);
+    response.render('adminAddTimeline.html')
+});
 
 export {router};
 

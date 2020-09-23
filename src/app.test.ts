@@ -10,6 +10,7 @@ import testArticelesData from "./testData/testDataArticles.json"
 import { Editor } from "./models/databaseModels";
 import {Articles} from "./database/database";
 import { convertToObject } from "typescript";
+import { addTimelineEvent } from "./database/database";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
@@ -19,6 +20,7 @@ const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
 const mockAddAdmin = mocked(database.insertEditor);
 const mockGetArticles = mocked(database.getArticles);
+const mockAddTimelineEvent = mocked(database.addTimelineEvent);
 
 const mockgetAdminByEmail = mocked(database.getAdminByEmail);
 const request = supertest(app);
@@ -231,6 +233,7 @@ describe("the sigin admin route", () => {
     });
 
 
+
 });
 
 describe("the edit rovers page", () => {
@@ -247,3 +250,27 @@ describe("the edit rovers page", () => {
     });
 
 });
+
+
+describe("The admin timeline route", () =>{
+    it("should return okay if it loads", async done => {
+        mockGetArticles.mockResolvedValue([]);
+        mockCheckDatabaseConnection.mockResolvedValue(true);
+        const response = await request
+        .get('/admin/rovers/timeline/new')
+        expect(response.status).toBe(200);
+            done()
+    });
+    it("should return 200 if request is valid", async done => {
+        const timelineitem = { rover_name: "spirit", image_url: "www.thisisaurl.com", heading: "HEADING", timeline_entry: "TIMELINE ENTRY", date: "2020-09-09" };
+        mockAddTimelineEvent.mockResolvedValue(timelineitem);
+        const response = await request
+            .post('/admin/rovers/timeline/new')
+            .send("rover_name=rover_name&image_url=image_url&heading=heading&timeline_entry=timeline_entry&date=date")
+            .set("Accept", "x-www-form-urlencoded");
+        expect(response.status).toBe(200)
+        // expect(response.header.location).toBe("/admin/rovers/timeline/new")
+        done();
+    });
+})
+
