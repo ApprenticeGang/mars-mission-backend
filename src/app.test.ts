@@ -201,5 +201,4 @@ describe("the edit rovers page", () => {
         done();
     });
 
-    it("should return ")
 });

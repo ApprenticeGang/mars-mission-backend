@@ -2,7 +2,6 @@ import "dotenv/config";
 import express, { response } from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
-import "dotenv/config";
 import { request } from "http";
 
 const router = express.Router()
