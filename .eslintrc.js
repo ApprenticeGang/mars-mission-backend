@@ -38,6 +38,7 @@
         "semi": "off",
         "@typescript-eslint/semi": ["error"],
         "no-shadow": "off",
-        "@typescript-eslint/no-shadow": ["error"]
+        "@typescript-eslint/no-shadow": ["error"],
+        "@typescript-eslint/no-unsafe-member-access": "off",
     }
 };

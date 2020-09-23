@@ -3,11 +3,10 @@ import {app} from "./app";
 import {RoverImage} from "./services/nasaService";
 import {mocked} from "ts-jest/utils";
 import * as nasaApiClient from "./nasa/nasaApiClient";
-import testImageApiData from "./testData/testdata.json"
+import testImageApiData from "./testData/testdata.json";
 import * as articles from "./database/articles";
 import * as timeline from "./database/timeline";
 import {Article} from "./database/articles";
-import {RoverName} from "./models/requestModels";
 import {TimelineItem} from "./database/timeline";
 
 jest.mock("./nasa/nasaApiClient");
@@ -22,10 +21,6 @@ const mockGetTimelineForRover = mocked(timeline.getTimelineForRover);
 
 describe("API Routes", () => {
     
-    describe("News", () => {
-        
-    });
-    
     describe("Rover", () => {
         
         describe("images", () => {
@@ -33,7 +28,7 @@ describe("API Routes", () => {
             it("should return images from NASA", async (done) => {
                 mockGetRoverPhotos.mockResolvedValue(testImageApiData);
                 
-                let response = await request.get("/api/rovers/spirit/images")
+                const response = await request.get("/api/rovers/spirit/images");
                 
                 expect(response.status).toBe(200);
 
@@ -73,11 +68,11 @@ describe("API Routes", () => {
                 };
                 mockGetArticles.mockResolvedValue([testArticle]);
                 
-                const response = await request.get("/api/articles")
+                const response = await request.get("/api/articles");
                 
                 expect(response.status).toBe(200);
-                const articles = response.body as Article[];
-                expect(articles[0]).toStrictEqual({
+                const articleResponse = response.body as Article[];
+                expect(articleResponse[0]).toStrictEqual({
                     id: 1,
                     imageUrl: "this is an image url",
                     title: "Test",
@@ -85,7 +80,7 @@ describe("API Routes", () => {
                     articleUrl: "this is a url",
                     publishDate: "2020-09-21T23:00:00.000Z",
                 });
-                done()
+                done();
             });
         });
         
@@ -117,6 +112,6 @@ describe("API Routes", () => {
                 });
                 done();
             });
-        })
+        });
     });
 });

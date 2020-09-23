@@ -29,9 +29,11 @@ app.use(
 );
 
 app.use(cors({
-    origin: ["http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com/",
-            "https://d2000sgepwjw55.cloudfront.net/",
-            "http://localhost:3000"]
+    origin: [
+        "http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com/",
+        "https://d2000sgepwjw55.cloudfront.net/",
+        "http://localhost:3000"
+    ]
 }));
 
 export const pathToTemplates = "./templates";
@@ -40,16 +42,17 @@ nunjucks.configure(pathToTemplates, {
     express: app
 });
 
-const LocalStrategy = passportLocal.Strategy;
-app.use(passport.initialize())
-passport.use(new LocalStrategy({
+const localStrategy = passportLocal.Strategy;
+app.use(passport.initialize());
+passport.use(new localStrategy({
     usernameField: 'email',
     passwordField: 'password'
 },
-    async (email, password, done) => {
-        const adminMember = await matchHash(email, password);
-        return done(null, adminMember);
-    }
+/* eslint-disable-next-line */
+async (email, password, done): Promise<void> => {
+    const adminMember = await matchHash(email, password);
+    done(null, adminMember);
+}
 ));
 
 passport.serializeUser(function (user, done) {
@@ -69,12 +72,14 @@ app.use('/api', apiRoutes);
 app.use('/admin', editorRoutes);
 
 /* istanbul ignore next */
-app.use((err:any, req:any, res:any, next:any) => {
+/* eslint-disable */
+app.use((err: any, req: any, res: any, next: any) => {
     if (err.message) {
         console.error(err.message);
         res.status(500).end();
     }
     next(err)
 })
+/* eslint-enable */
 
 export { app };

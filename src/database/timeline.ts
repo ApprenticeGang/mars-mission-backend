@@ -10,7 +10,7 @@ export interface TimelineItem {
     date: string;
 }
 
-interface NewTimelineItem {
+export interface NewTimelineItem {
     roverName: RoverName;
     imageUrl: string;
     heading: string;
@@ -24,7 +24,7 @@ export const getTimelineForRover = async (roverName: RoverName): Promise<Timelin
         .from<TimelineItem>("timeline_entry")
         .where("rover_name", roverName)
         .orderBy("date", "desc");
-}
+};
 
 export const insertTimelineItem = async (timelineItem: NewTimelineItem): Promise<void> => {
     await db()

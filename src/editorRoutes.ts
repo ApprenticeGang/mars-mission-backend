@@ -3,8 +3,8 @@ import express  from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import "dotenv/config";
-import {insertArticle} from "./database/articles";
-import {insertTimelineItem} from "./database/timeline";
+import {insertArticle, NewArticle} from "./database/articles";
+import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
 import passport from "passport";
 import {deleteEditorById, getEditors} from "./database/editors";
 
@@ -25,7 +25,7 @@ router.post("/sign-in", passport.authenticate('local', {
 
 router.get("/editors", async (request, response) => {
     const editors = await getEditors();
-    response.render('editorList.html', { editors })
+    response.render('editorList.html', { editors });
 });
 
 router.get("/editors/new", (request, response) => {
@@ -56,9 +56,9 @@ router.get("/articles/new", (request, response) => {
 });
 
 router.post("/articles/new", async (request, response) => {
-    const newArticle = request.body;
+    const newArticle = request.body as NewArticle;
     await insertArticle(newArticle);
-    response.render('adminAddNews.html')
+    response.render('adminAddNews.html');
 });
 
 router.get("/rovers/timeline/new", (request, response) => {
@@ -66,9 +66,9 @@ router.get("/rovers/timeline/new", (request, response) => {
 });
 
 router.post("/rovers/timeline/new", async (request, response) => {
-    const newTimeline = request.body;
+    const newTimeline = request.body as NewTimelineItem;
     await insertTimelineItem(newTimeline);
-    response.render('adminAddTimeline.html')
+    response.render('adminAddTimeline.html');
 });
 
 export {router};
