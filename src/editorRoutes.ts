@@ -37,7 +37,7 @@ router.get("/articles/new", (request, response) => {
 
 router.post("/articles/new", async (request, response) => {
     const newArticle = request.body;
-    const result = await insertArticle(newArticle);
+    await insertArticle(newArticle);
     response.render('adminAddNews.html')
 });
 

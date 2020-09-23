@@ -81,8 +81,8 @@ app.post("/admin/sign-in", passport.authenticate('local', {
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {
     if (err.message) {
-        res.status(404);
-        res.json({error: err.message});
+        console.error(err.message);
+        res.status(500).end();
     }
     next(err)
 })
