@@ -12,9 +12,30 @@ interface RoversApiData {
     rovers: RoverApiData[];
 }
 
+export interface Camera{
+    id: number;
+    name: string;
+    rover_id: number;
+    full_name: string;
+}
+
+export interface Rover{
+    id: number;
+    name: string;
+    landing_date: string;
+    launch_date: string;
+    status: string;
+}
+
 interface PhotoApiData {
     img_src: string;
+    sol: number;
+    id: number;
+    earth_date: string;
+    camera: Camera;
+    rover: Rover;
 }
+
 
 interface RoverPhotosApiData {
     photos: PhotoApiData[];
@@ -22,12 +43,13 @@ interface RoverPhotosApiData {
 
 export const getRovers = async (): Promise<RoverApiData[]> => {
     const apiData = await get<RoversApiData>("/rovers");
+
     return apiData.rovers;
 };
 
 export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]> => {
     const queryParameters = [
-        { name: "sol", value: "100" }
+        { name: "sol", value: "1000" }
     ];
     const apiData = await get<RoverPhotosApiData>(`/rovers/${roverName}/photos`, queryParameters);
     return apiData.photos;
@@ -45,3 +67,4 @@ const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Pro
     
     return await response.json() as T;
 };
+
