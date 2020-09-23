@@ -15,9 +15,18 @@ interface NewArticle {
     publishDate: string;
 }
 
+
 interface NewImage {
     imageUrl: string;
     roverName: string;
+}
+
+interface TimelineItem {
+    rover_name: string;
+    image_url: string;
+    heading: string;
+    timeline_entry: string;
+
     date: string;
 }
 
@@ -79,6 +88,7 @@ export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
         });
 };
 
+
 export const addNewImage = async (newImage: NewImage): Promise<void> => {
     return db('images')
         .insert({
@@ -87,3 +97,15 @@ export const addNewImage = async (newImage: NewImage): Promise<void> => {
             date: newImage.date
         });
 };
+
+export const addTimelineEvent = async (timelineItem: TimelineItem): Promise<TimelineItem | undefined> => {
+    return db('timeline_entry')
+        .insert({
+            rover_name: timelineItem.rover_name,
+            image_url: timelineItem.image_url,
+            heading: timelineItem.heading,
+            timeline_entry: timelineItem.timeline_entry,
+            date: timelineItem.date
+        });
+};
+

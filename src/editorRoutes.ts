@@ -5,6 +5,8 @@ import {createEditor} from "./services/authService";
 import "dotenv/config";
 import { addNewsArticle, addNewImage } from "./database/database";
 import { request } from "http";
+import { addTimelineEvent } from "./database/database";
+
 
 const router = express.Router()
 
@@ -49,6 +51,14 @@ router.post("/rovers/:roverName/images", async (request, response) => {
     const  newImage = request.body;
     const result = await addNewImage(newImage);
     response.render('adminAddImages.html');
+
+router.get("/rovers/timeline/new", (request, response) => {
+    response.render('adminAddTimeline.html');
+});
+router.post("/rovers/timeline/new", async (request, response) => {
+    const newTimeline = request.body;
+    const result = await addTimelineEvent(newTimeline);
+    response.render('adminAddTimeline.html')
 });
 
 export {router};
