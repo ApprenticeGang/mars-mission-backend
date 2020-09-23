@@ -15,6 +15,12 @@ interface NewArticle {
     publishDate: string;
 }
 
+interface NewImage {
+    imageUrl: string;
+    roverName: string;
+    date: string;
+}
+
 interface TimelineItem {
     rover_name: string;
     image_url: string;
@@ -78,6 +84,16 @@ export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
             summary: newArticle.summary,
             article_url: newArticle.articleUrl,
             publish_date: newArticle.publishDate
+        });
+};
+
+
+export const addNewImage = async (newImage: NewImage): Promise<void> => {
+    return db('images')
+        .insert({
+            image_url: newImage.imageUrl,
+            rover_name: newImage.roverName,
+            date: newImage.date
         });
 };
 
