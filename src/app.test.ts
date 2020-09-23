@@ -12,8 +12,8 @@ jest.mock("./database/database");
 const mockGetRovers = mocked(nasaApiClient.getRovers);
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
-
 const mockAddAdmin = mocked(database.insertEditor);
+const mockGetArticles = mocked(database.getArticles);
 
 const request = supertest(app);
 
@@ -132,10 +132,11 @@ describe("the add admin route", () => {
 
 describe("the article route", () => {
     it("should return OK if it loads", async done => {
+        mockGetArticles.mockResolvedValue([]);
+        mockCheckDatabaseConnection.mockResolvedValue(true);
         const response = await request
         .get("/api/articles")
         expect(response.status).toBe(200);
         done()
-    })
-
-})
+    });
+});

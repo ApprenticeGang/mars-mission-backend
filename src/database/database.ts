@@ -32,6 +32,16 @@ export const insertEditor = async(editor: NewEditor): Promise<void> => {
 };
 
 
-export const getArticles=(): QueryBuilder =>{
-    return db.select("*").from('news');
+interface Articles{
+    id: number; 
+    image_url: string;
+    title: string; 
+    summary: string;
+    article_url: string;
+    publish_date: string;
+
+}
+
+export const getArticles=(): Promise<Articles[]> => {
+    return db.select("*").from<Articles>('news');
 };
