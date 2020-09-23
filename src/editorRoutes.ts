@@ -6,10 +6,11 @@ import "dotenv/config";
 import {insertArticle} from "./database/articles";
 import {insertTimelineItem} from "./database/timeline";
 import passport from "passport";
+import {getEditors} from "./database/editors";
 
 const router = express.Router();
 
-router.get("/home", (request, response) => {
+router.get("", (request, response) => {
     response.render('index.html');
 });
 
@@ -21,6 +22,11 @@ router.post("/sign-in", passport.authenticate('local', {
     successRedirect: '/home',
     failureRedirect: '/admin/sign-in',
 }));
+
+router.get("/editors", async (request, response) => {
+    const editors = await getEditors();
+    response.render('editorList.html', { editors })
+});
 
 router.get("/editors/new", (request, response) => {
     response.render('adminEditor.html');
@@ -43,7 +49,6 @@ router.get("/articles/new", (request, response) => {
     response.render('adminAddNews.html');
 });
 
-
 router.post("/articles/new", async (request, response) => {
     const newArticle = request.body;
     await insertArticle(newArticle);
@@ -53,6 +58,7 @@ router.post("/articles/new", async (request, response) => {
 router.get("/rovers/timeline/new", (request, response) => {
     response.render('adminAddTimeline.html');
 });
+
 router.post("/rovers/timeline/new", async (request, response) => {
     const newTimeline = request.body;
     await insertTimelineItem(newTimeline);

@@ -13,6 +13,12 @@ interface NewEditor {
     hashedPassword: string;
 }
 
+export const getEditors = async (): Promise<Editor[]> => {
+    return db
+        .select("*")
+        .from<Editor>("admin");
+};
+
 export const getEditorByEmail = (email: string): Promise<Editor | undefined> => {
     return db('admin')
         .select()

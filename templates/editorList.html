@@ -1,0 +1,17 @@
+﻿{% extends "_base.html" %}
+
+{% block content %}
+
+<section>
+    <div class="card">
+        <h2>Editors</h2>
+        <ul>
+            {% for editor in editors %}
+            <li>
+                <a href="/admin/editors/{{ editor.id}}/edit">{{ editor.email }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}

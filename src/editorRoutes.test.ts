@@ -13,21 +13,40 @@ const request = supertest(app);
 
 const mockInsertEditor = mocked(editors.insertEditor);
 const mockGetEditorByEmail = mocked(editors.getEditorByEmail);
+const mockGetEditors = mocked(editors.getEditors);
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockInsertArticle = mocked(articles.insertArticle);
+
+const testEditor = { 
+    id: 10, 
+    email: "john4.doe@gmail.com", 
+    salt: "yhzvD1+chPZCfg==", 
+    hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ="
+};
 
 describe("admin routes", () => {
     
     describe("home", () => {
         
         it("GET returns 200", async done => {
-            const response = await request.get("/admin/home");
+            const response = await request.get("/admin");
             expect(response.status).toBe(200);
             done();
         });
     });
     
     describe("Editors", () => {
+        
+        describe("List Editors", () => {
+           
+            it("GET returns 200", async done => {
+                mockGetEditors.mockResolvedValue([testEditor])
+
+                const response = await request.get("/admin/editors/");
+                expect(response.status).toBe(200);
+                done();
+            });
+        });
         
         describe("Add New Editor", () => {
             
@@ -79,8 +98,7 @@ describe("admin routes", () => {
         });
 
         it("POST returns 200 if request is valid", async done => {
-            const editor = { id: 10, email: "john4.doe@gmail.com", salt: "yhzvD1+chPZCfg==", hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ=" };
-            mockGetEditorByEmail.mockResolvedValue(editor);
+            mockGetEditorByEmail.mockResolvedValue(testEditor);
             const response = await request
                 .post('/admin/sign-in')
                 .send("email=email&password=password4")
