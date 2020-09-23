@@ -7,6 +7,14 @@ interface NewEditor {
     hashedPassword: string;
 }
 
+interface NewArticle {
+    imageUrl: string;
+    title: string;
+    summary: string;
+    articleUrl: string;
+    publishDate: string;
+}
+
 const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
@@ -38,4 +46,15 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
         .from<Editor>("admin")
         .where("email", email)
         .first();
+};
+
+export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
+    return db('news')
+        .insert({
+            image_url: newArticle.imageUrl,
+            title: newArticle.title,
+            summary: newArticle.summary,
+            article_url: newArticle.articleUrl,
+            publish_date: newArticle.publishDate
+        });
 };
