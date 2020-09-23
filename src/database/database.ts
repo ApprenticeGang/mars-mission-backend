@@ -1,5 +1,5 @@
 import knex from "knex";
-import {Editor} from "../models/databaseModels";
+import { Editor } from "../models/databaseModels";
 
 interface NewEditor {
     email: string;
@@ -55,17 +55,17 @@ export const getAdminByEmail = (email: string): Promise<Editor | undefined> => {
 };
 
 
-export interface Articles{
-    id: number; 
+export interface Articles {
+    id: number;
     image_url: string;
-    title: string; 
+    title: string;
     summary: string;
     article_url: string;
     publish_date: string;
 
 }
 
-export const getArticles=(): Promise<Articles[]> => {
+export const getArticles = (): Promise<Articles[]> => {
     return db.select("*").from<Articles>('news');
 };
 export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
@@ -77,13 +77,13 @@ export const addNewsArticle = async (newArticle: NewArticle): Promise<void> => {
             article_url: newArticle.articleUrl,
             publish_date: newArticle.publishDate
         });
-    };
+};
 
-    export const addNewImage = async (newImage: NewImage): Promise<void> => {
-        return db('images')
+export const addNewImage = async (newImage: NewImage): Promise<void> => {
+    return db('images')
         .insert({
             image_url: newImage.imageUrl,
             rover_name: newImage.roverName,
             date: newImage.date
         });
-    };
+};
