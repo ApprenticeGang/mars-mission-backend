@@ -187,3 +187,17 @@ describe("the sigin admin route", () => {
 
 
 });
+
+describe("the edit rovers page", () => {
+    it("return response ok if it loads", async done => {
+        const response = await request.get("/admin/rovers");
+        expect(response.status).toBe(200);
+        done();
+    });
+
+    it("return response ok if it loads", async done => {
+        const response = await request.get("/admin/rovers/:name");
+        expect(response.status).toBe(200);
+        done();
+    });
+});

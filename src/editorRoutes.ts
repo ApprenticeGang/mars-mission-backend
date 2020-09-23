@@ -1,8 +1,9 @@
 import "dotenv/config";
-import express from 'express';
+import express, { response } from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import "dotenv/config";
+import { request } from "http";
 
 const router = express.Router()
 
@@ -28,4 +29,20 @@ router.post("/editors/new", async (request, response) => {
     return response.send("okay");
 });
 
+router.get("/rovers", async (request, response) => {
+    response.render('rovers.html');
+});
+
+router.get("/rovers/:name", async (request, response) => {
+    const name = request.params.name
+    response.render('editRovers.html');
+});
+
+router.post("/rovers/:name", async (request, response) => {
+    const name = request.params.name
+    response.render('editRovers.html');
+});
+
+
 export {router};
+
