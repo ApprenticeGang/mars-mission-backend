@@ -41,6 +41,15 @@ router.post("/articles/new", async (request, response) => {
     response.render('adminAddNews.html')
 });
 
+router.get("/rovers", async (request, response) => {
+    response.render('rovers.html');
+});
+
+router.get("/rovers/:name", async (request, response) => {
+    const name = request.params.name
+    response.render('editRovers.html');
+});
+
 router.get("/rovers/timeline/new", (request, response) => {
     response.render('adminAddTimeline.html');
 });
@@ -49,5 +58,6 @@ router.post("/rovers/timeline/new", async (request, response) => {
     const result = await addTimelineEvent(newTimeline);
     response.render('adminAddTimeline.html')
 });
+
 
 export {router};

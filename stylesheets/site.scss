@@ -77,6 +77,24 @@ img {
     height: 100%;
   }
 
+.roverList {
+    margin: 5%;
+    width: 30%;
+    height: 40vh;
+    background-color:$colorTextLight;
+    color: $colorTextDark;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    a {
+        color: $colorTextDark;
+    }
+}
+
 main{
     background-color:$colorTextDark;
     padding-top: 20px;
