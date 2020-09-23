@@ -21,7 +21,7 @@ describe("admin routes", () => {
     describe("home", () => {
         
         it("GET returns 200", async done => {
-            const response = await request.get("/home");
+            const response = await request.get("/admin/home");
             expect(response.status).toBe(200);
             done();
         });

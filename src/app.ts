@@ -65,18 +65,8 @@ app.get('', async (request, response) => {
     response.json(status);
 });
 
-app.get("/home", (request, response) => {
-    response.render('index.html');
-});
-
 app.use('/api', apiRoutes);
-
 app.use('/admin', editorRoutes);
-
-app.post("/admin/sign-in", passport.authenticate('local', {
-    successRedirect: '/home',
-    failureRedirect: '/admin/sign-in',
-}));
 
 /* istanbul ignore next */
 app.use((err:any, req:any, res:any, next:any) => {

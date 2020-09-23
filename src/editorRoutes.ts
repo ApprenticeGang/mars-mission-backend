@@ -5,13 +5,22 @@ import {createEditor} from "./services/authService";
 import "dotenv/config";
 import {insertArticle} from "./database/articles";
 import {insertTimelineItem} from "./database/timeline";
+import passport from "passport";
 
-const router = express.Router()
+const router = express.Router();
 
+router.get("/home", (request, response) => {
+    response.render('index.html');
+});
 
 router.get("/sign-in", (request, response) => {
     response.render('adminSignIn.html');
 });
+
+router.post("/sign-in", passport.authenticate('local', {
+    successRedirect: '/home',
+    failureRedirect: '/admin/sign-in',
+}));
 
 router.get("/editors/new", (request, response) => {
     response.render('adminEditor.html');
