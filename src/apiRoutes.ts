@@ -1,12 +1,12 @@
-import express, { response } from 'express';
+import express  from 'express';
 import "dotenv/config";
 import {getRoverImages} from "./services/nasaService";
-import {getArticles} from "./database/database"
-import { request } from 'http';
+import {getArticles} from "./database/articles";
+import {getTimelineForRover} from "./database/timeline";
+import {RoverName} from "./models/requestModels";
 
 
-const router = express.Router()
-
+const router = express.Router();
 
 router.get("/rovers/:name/images", async (request, response) => {
     const roverName = request.params.name;
@@ -14,11 +14,33 @@ router.get("/rovers/:name/images", async (request, response) => {
     response.json(images);
 });
 
-
-router.get("/articles", async(request, response) => {
-    const sqlResult = await getArticles();
-    response.json(sqlResult);
+router.get("/rovers/:name/timeline", async (request, response) => {
+    const roverName = request.params.name as RoverName;
+    const timeline = await getTimelineForRover(roverName);
+    response.json(timeline.map(timelineItem => {
+        return {
+            id: timelineItem.id,
+            roverName: timelineItem.rover_name,
+            imageUrl: timelineItem.image_url,
+            heading: timelineItem.heading,
+            body: timelineItem.timeline_entry,
+            date: timelineItem.date,
+        };
+    }));
 });
 
+router.get("/articles", async(request, response) => {
+    const dbArticles = await getArticles();
+    response.json(dbArticles.map(dbArticle => {
+        return {
+            id: dbArticle.id,
+            imageUrl: dbArticle.image_url,
+            title: dbArticle.title,
+            summary: dbArticle.summary,
+            articleUrl: dbArticle.article_url,
+            publishDate: dbArticle.publish_date,
+        };
+    }));
+});
 
 export {router};

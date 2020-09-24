@@ -1,5 +1,5 @@
 import knex from "knex";
-import {Editor} from "../models/databaseModels";
+
 
 interface NewEditor {
     email: string;
@@ -30,6 +30,8 @@ interface TimelineItem {
 }
 
 const db = knex({
+
+export const db = knex({
     client: 'pg',
     connection: process.env.DATABASE_URL
 });
@@ -42,6 +44,7 @@ export const checkDatabaseConnection = async (): Promise<boolean> => {
         return false;
     }
 };
+
 
 export const insertEditor = async (editor: NewEditor): Promise<void> => {
     await db
@@ -107,3 +110,4 @@ export const addTimelineEvent = async (timelineItem: TimelineItem): Promise<Time
             date: timelineItem.date
         });
 };
+

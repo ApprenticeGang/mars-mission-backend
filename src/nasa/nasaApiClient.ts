@@ -12,30 +12,22 @@ interface RoversApiData {
     rovers: RoverApiData[];
 }
 
-export interface Camera{
-    id: number;
-    name: string;
-    rover_id: number;
-    full_name: string;
-}
-
-export interface Rover{
-    id: number;
-    name: string;
-    landing_date: string;
-    launch_date: string;
-    status: string;
-}
-
 interface PhotoApiData {
     img_src: string;
     sol: number;
     id: number;
     earth_date: string;
-    camera: Camera;
-    rover: Rover;
+    camera: {
+        name: string;
+        full_name: string;
+    };
+    rover: {
+        name: string;
+        landing_date: string;
+        launch_date: string;
+        status: string;
+    };
 }
-
 
 interface RoverPhotosApiData {
     photos: PhotoApiData[];
