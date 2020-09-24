@@ -4,25 +4,13 @@ import supertest from "supertest";
 import { app } from "./app";
 import { mocked } from "ts-jest/utils";
 import { StatusSummary } from "./services/statusService";
-import { RoverImage } from "./services/nasaService";
-import testData from "./testData/testdata.json"
-import testArticelesData from "./testData/testDataArticles.json"
-import { Editor } from "./models/databaseModels";
-import {Articles} from "./database/database";
-import { convertToObject } from "typescript";
-import { addTimelineEvent } from "./database/database";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/database");
 
 const mockGetRovers = mocked(nasaApiClient.getRovers);
-const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
-const mockAddAdmin = mocked(database.insertEditor);
-const mockGetArticles = mocked(database.getArticles);
-const mockAddTimelineEvent = mocked(database.addTimelineEvent);
 
-const mockgetAdminByEmail = mocked(database.getAdminByEmail);
 const request = supertest(app);
 
 describe("The status page", () => {
@@ -269,6 +257,4 @@ describe("the edit rovers page", () => {
     });
 
 });
-
-
 
