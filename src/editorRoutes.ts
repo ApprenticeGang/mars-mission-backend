@@ -1,16 +1,19 @@
 import "dotenv/config";
-import express  from 'express';
-import {NewEditorRequest} from "./models/requestModels";
-import {createEditor} from "./services/authService";
+import express from 'express';
+import { NewEditorRequest } from "./models/requestModels";
+import { createEditor } from "./services/authService";
 import "dotenv/config";
-import {insertArticle, NewArticle} from "./database/articles";
-import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
+import { insertArticle, NewArticle } from "./database/articles";
+import { insertTimelineItem, NewTimelineItem } from "./database/timeline";
 import passport from "passport";
-import {deleteEditorById, getEditors} from "./database/editors";
+import { deleteEditorById, getEditors } from "./database/editors";
 
 const router = express.Router();
 
 router.get("", (request, response) => {
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
     response.render('index.html');
 });
 
@@ -19,9 +22,16 @@ router.get("/sign-in", (request, response) => {
 });
 
 router.post("/sign-in", passport.authenticate('local', {
-    successRedirect: '/home',
+    successRedirect: '/admin',
     failureRedirect: '/admin/sign-in',
 }));
+
+router.get("/sign-out", (request, response) => {
+    request.logout();
+    response.redirect('/admin/sign-in')
+    
+});
+
 
 router.get("/editors", async (request, response) => {
     const editors = await getEditors();
@@ -29,30 +39,38 @@ router.get("/editors", async (request, response) => {
 });
 
 router.get("/editors/new", (request, response) => {
-    response.render('adminEditor.html');
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+    return response.render('adminEditor.html');
 });
+
+
 
 router.post("/editors/new", async (request, response) => {
     const { email, password } = request.body as NewEditorRequest;
-
     if (!email || email === "") {
         return response.status(400).send("Please enter a valid email");
     }
     if (!password || password === "") {
         return response.status(400).send("Please enter a valid password");
     }
+
     await createEditor(email, password);
     return response.redirect("/admin/editors");
 });
 
-router.post("/editors/:id/delete", async(request, response) => {
+router.post("/editors/:id/delete", async (request, response) => {
     const id = parseInt(request.params.id);
     await deleteEditorById(id);
     return response.redirect("/admin/editors");
 });
 
 router.get("/articles/new", (request, response) => {
-    response.render('adminAddNews.html');
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+    return response.render('adminAddNews.html');
 });
 
 router.post("/articles/new", async (request, response) => {
@@ -62,7 +80,10 @@ router.post("/articles/new", async (request, response) => {
 });
 
 router.get("/rovers/timeline/new", (request, response) => {
-    response.render('adminAddTimeline.html');
+    if (!request.user) {
+        return response.redirect("/admin/sign-in")
+    }
+    return response.render('adminAddTimeline.html');
 });
 
 router.post("/rovers/timeline/new", async (request, response) => {
@@ -71,4 +92,4 @@ router.post("/rovers/timeline/new", async (request, response) => {
     response.render('adminAddTimeline.html');
 });
 
-export {router};
+export { router };
