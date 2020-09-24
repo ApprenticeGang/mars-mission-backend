@@ -71,4 +71,12 @@ router.post("/rovers/timeline/new", async (request, response) => {
     response.render('adminAddTimeline.html');
 });
 
+router.get("/rovers", async (request, response) => {
+    response.render('rovers.html');
+});
+router.get("/rovers/:name", async (request, response) => {
+    const name = request.params.name
+    response.render('editRovers.html');
+});
+
 export {router};
