@@ -4,10 +4,13 @@ import {mocked} from "ts-jest/utils";
 import * as editors from "./database/editors";
 import * as timeline from "./database/timeline";
 import * as articles from "./database/articles";
+import * as roverImages from "./database/photos"
 
 jest.mock("./database/editors");
 jest.mock("./database/timeline");
 jest.mock("./database/articles");
+jest.mock("./database/photos");
+
 
 const request = supertest(app);
 
@@ -17,6 +20,7 @@ const mockGetEditors = mocked(editors.getEditors);
 const mockDeleteEditor = mocked(editors.deleteEditorById);
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockInsertArticle = mocked(articles.insertArticle);
+const mockDeleteRoverImage=mocked(roverImages.deletePhotoById);
 
 const testEditor = { 
     id: 10, 
@@ -209,4 +213,16 @@ describe("admin routes", () => {
             });
         });
     });
+    describe("Rover images", () => {
+        describe("Delete Timeline event", () => {
+        
+            it("POST succeeds if timeline event exists", async done => {
+                mockDeleteRoverImage.mockResolvedValue();
+                const response = await request.post("/admin/rovers/spirit/images/2/delete");
+                expect(response.status).toBe(302);
+                done();
+            });
+        });
+
+    })
 });

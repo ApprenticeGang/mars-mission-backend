@@ -7,6 +7,7 @@ import {insertArticle, NewArticle} from "./database/articles";
 import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
 import passport from "passport";
 import {deleteEditorById, getEditors} from "./database/editors";
+import { deletePhotoById } from "./database/photos";
 
 const router = express.Router();
 
@@ -70,5 +71,15 @@ router.post("/rovers/timeline/new", async (request, response) => {
     await insertTimelineItem(newTimeline);
     response.render('adminAddTimeline.html');
 });
+
+router.post("/rovers/:roverName/images/:id/delete", async(request, response) => {
+    const id = parseInt(request.params.id);
+    const rover = request.params.roverName
+    await deletePhotoById(id);
+
+    return response.redirect(`/admin/rover/${rover}`);
+});
+
+
 
 export {router};
