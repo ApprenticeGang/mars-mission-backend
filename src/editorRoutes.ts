@@ -6,7 +6,8 @@ import "dotenv/config";
 import { insertArticle, NewArticle } from "./database/articles";
 import { insertTimelineItem, NewTimelineItem } from "./database/timeline";
 import passport from "passport";
-import { deleteEditorById, getEditors } from "./database/editors";
+import {deleteEditorById, getEditors} from "./database/editors";
+import { deletePhotoById } from "./database/photos";
 
 const router = express.Router();
 
@@ -44,8 +45,6 @@ router.get("/editors/new", (request, response) => {
     }
     return response.render('adminEditor.html');
 });
-
-
 
 router.post("/editors/new", async (request, response) => {
     const { email, password } = request.body as NewEditorRequest;
@@ -92,4 +91,12 @@ router.post("/rovers/timeline/new", async (request, response) => {
     response.render('adminAddTimeline.html');
 });
 
-export { router };
+router.post("/rovers/:roverName/images/:id/delete", async(request, response) => {
+    const id = parseInt(request.params.id);
+    const rover = request.params.roverName
+    await deletePhotoById(id);
+
+    return response.redirect(`/admin/rover/${rover}`);
+});
+
+export {router};
