@@ -20,6 +20,7 @@ const mockGetEditors = mocked(editors.getEditors);
 const mockDeleteEditor = mocked(editors.deleteEditorById);
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockInsertArticle = mocked(articles.insertArticle);
+const mockDeleteTimelineItem=mocked(timeline.deleteTimelineItemById);
 const mockDeleteRoverImage=mocked(roverImages.deletePhotoById);
 
 const testEditor = {
@@ -286,11 +287,24 @@ describe("admin routes", () => {
                     .post('/admin/rovers/timeline/new')
                     .send("rover_name=rover_name&image_url=image_url&heading=heading&timeline_entry=timeline_entry&date=date")
                     .set("Accept", "x-www-form-urlencoded");
-                expect(response.status).toBe(200);
+                expect(response.status).toBe(302);
+                done();
+            });
+        });
+        describe("Delete Timeline event", () => {
+        
+            it("POST succeeds if timeline event exists", async done => {
+                mockDeleteTimelineItem.mockResolvedValue();
+                
+                const response = await request.post("/admin/rovers/spirit/timeline/2/delete");
+                
+                expect(response.status).toBe(302);
+                // expect(response.header.location).toBe("/admin/editors");
                 done();
             });
         });
     });
+
     describe("Rover images", () => {
         describe("Delete Timeline event", () => {
         
