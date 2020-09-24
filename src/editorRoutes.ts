@@ -8,7 +8,7 @@ import passport from "passport";
 import {deleteEditorById, getEditors, } from "./database/editors";
 import { deletePhotoById } from "./database/photos";
 
-const router = express.Router()
+const router = express.Router();
 
 router.get("", (request, response) => {
     if (!request.user) {
