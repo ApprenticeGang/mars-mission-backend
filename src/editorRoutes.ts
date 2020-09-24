@@ -4,9 +4,9 @@ import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
 import "dotenv/config";
 import {insertArticle, NewArticle} from "./database/articles";
-import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
+import {insertTimelineItem, NewTimelineItem, deleteTimelineItemById, getTimelineItemById, getTimelineForRover} from "./database/timeline";
 import passport from "passport";
-import {deleteEditorById, getEditors} from "./database/editors";
+import {deleteEditorById, getEditors, } from "./database/editors";
 
 const router = express.Router();
 
@@ -68,7 +68,16 @@ router.get("/rovers/timeline/new", (request, response) => {
 router.post("/rovers/timeline/new", async (request, response) => {
     const newTimeline = request.body as NewTimelineItem;
     await insertTimelineItem(newTimeline);
-    response.render('adminAddTimeline.html');
+    response.redirect("/rovers/edit");
 });
+
+router.post("/rovers/:roverName/timeline/:id/delete", async(request, response) => {
+        const id = parseInt(request.params.id);
+        const rover = request.params.roverName
+        await deleteTimelineItemById(id);
+
+        return response.redirect(`/admin/rover/${rover}`);
+    });
+
 
 export {router};
