@@ -10,9 +10,16 @@ import sassMiddleware from "node-sass-middleware";
 import {router as apiRoutes}  from "./apiRoutes";
 import {router as editorRoutes} from "./editorRoutes";
 import cors from "cors";
+import cookieparser from "cookie-parser";
+import expresssession from "express-session";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieparser());
+app.use(expresssession({
+    secret: "secret"
+}));
 
 const srcPath = __dirname + "/../stylesheets";
 const destPath = __dirname + "/../public";
@@ -44,6 +51,7 @@ nunjucks.configure(pathToTemplates, {
 
 const localStrategy = passportLocal.Strategy;
 app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new localStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -54,7 +62,6 @@ async (email, password, done): Promise<void> => {
     done(null, adminMember);
 }
 ));
-
 passport.serializeUser(function (user, done) {
     done(null, user);
 });
@@ -62,6 +69,8 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
     done(null, user);
 });
+
+exports.restrict
 
 app.get('', async (request, response) => {
     const status = await getStatus();
