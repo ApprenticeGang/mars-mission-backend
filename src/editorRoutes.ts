@@ -2,13 +2,12 @@ import "dotenv/config";
 import express  from 'express';
 import {NewEditorRequest} from "./models/requestModels";
 import {createEditor} from "./services/authService";
-import "dotenv/config";
 import {insertArticle, NewArticle} from "./database/articles";
 import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
 import passport from "passport";
 import {deleteEditorById, getEditors} from "./database/editors";
 
-const router = express.Router();
+const router = express.Router()
 
 router.get("", (request, response) => {
     response.render('index.html');
@@ -80,3 +79,4 @@ router.get("/rovers/:name", async (request, response) => {
 });
 
 export {router};
+
