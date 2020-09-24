@@ -12,7 +12,7 @@ interface RoversApiData {
     rovers: RoverApiData[];
 }
 
-interface PhotoApiData {
+export interface PhotoApiData {
     img_src: string;
     sol: number;
     id: number;

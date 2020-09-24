@@ -1,5 +1,6 @@
 ﻿import {db} from "./database";
 import {RoverName} from "../models/requestModels";
+import { QueryBuilder } from "knex";
 
 export interface TimelineItem {
     id: number;
@@ -26,6 +27,7 @@ export const getTimelineForRover = async (roverName: RoverName): Promise<Timelin
         .orderBy("date", "desc");
 };
 
+
 export const insertTimelineItem = async (timelineItem: NewTimelineItem): Promise<void> => {
     await db()
         .insert({
@@ -36,4 +38,21 @@ export const insertTimelineItem = async (timelineItem: NewTimelineItem): Promise
             date: timelineItem.date
         })
         .into<TimelineItem>("timeline_entry");
+};
+
+export const getTimelineItemById = async (id: number, roverName: string): Promise<QueryBuilder> => {
+    return db()
+        .select("*")
+        .from("timeline_entry")
+        .where("id", id)
+        .andWhere("rover_name", roverName)
+        .first();
+};
+
+export const deleteTimelineItemById = async (id: number): Promise<void> => {
+    await db()
+        .delete()
+        .from<TimelineItem>("timeline_entry")
+        .where("id", id);
+        
 };
