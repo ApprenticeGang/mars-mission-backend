@@ -1,15 +1,14 @@
 import "dotenv/config";
-import express from 'express';
-import { NewEditorRequest } from "./models/requestModels";
-import { createEditor } from "./services/authService";
-import "dotenv/config";
+import express  from 'express';
+import {NewEditorRequest} from "./models/requestModels";
+import {createEditor} from "./services/authService";
+import {insertArticle, NewArticle} from "./database/articles";
 import {insertTimelineItem, NewTimelineItem, deleteTimelineItemById, getTimelineItemById, getTimelineForRover} from "./database/timeline";
 import passport from "passport";
 import {deleteEditorById, getEditors, } from "./database/editors";
-import { insertArticle, NewArticle } from "./database/articles";
 import { deletePhotoById } from "./database/photos";
 
-const router = express.Router();
+const router = express.Router()
 
 router.get("", (request, response) => {
     if (!request.user) {
@@ -105,6 +104,15 @@ router.post("/rovers/:roverName/images/:id/delete", async(request, response) => 
     await deletePhotoById(id);
 
     return response.redirect(`/admin/rover/${rover}`);
+});
+
+router.get("/rovers", async (request, response) => {
+    response.render('rovers.html');
+});
+
+router.get("/rovers/:name", async (request, response) => {
+    const name = request.params.name
+    response.render('editRovers.html');
 });
 
 export {router};
