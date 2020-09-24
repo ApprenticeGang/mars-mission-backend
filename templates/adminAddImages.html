@@ -1,0 +1,22 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<section>
+<form method="post" action="/admin/rovers/:roverName/images" class="manage">
+    <h2>Add Images</h2>
+
+    <label for="imageUrl">Image Url</label>
+    <input id="imageUrl" type="text" name="imageUrl" required/>
+
+    <label for="roverName">Title</label>
+    <input id="roverName" type="text" name="roverName" required/>
+
+    <label for="date">Date</label>
+    <input id="date" type="date" name="date" required/>
+
+    <button type="submit">Submit</button>
+
+</form>
+</section>
+{% endblock %} 

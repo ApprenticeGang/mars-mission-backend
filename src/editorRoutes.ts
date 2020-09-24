@@ -7,6 +7,7 @@ import {insertArticle, NewArticle} from "./database/articles";
 import {insertTimelineItem, NewTimelineItem} from "./database/timeline";
 import passport from "passport";
 import {deleteEditorById, getEditors} from "./database/editors";
+import { addNewImage, NewImage } from "./database/images";
 
 const router = express.Router();
 
@@ -22,6 +23,8 @@ router.post("/sign-in", passport.authenticate('local', {
     successRedirect: '/home',
     failureRedirect: '/admin/sign-in',
 }));
+
+
 
 router.get("/editors", async (request, response) => {
     const editors = await getEditors();
@@ -59,6 +62,16 @@ router.post("/articles/new", async (request, response) => {
     const newArticle = request.body as NewArticle;
     await insertArticle(newArticle);
     response.render('adminAddNews.html');
+});
+
+router.get("/rovers/:roverName/images", (request, response) => {
+    response.render('adminAddImages.html');
+});
+
+router.post("/rovers/:roverName/images", async (request, response) => {
+    const newImage = request.body as NewImage;
+    await addNewImage(newImage);
+    response.render('adminAddImages.html');
 });
 
 router.get("/rovers/timeline/new", (request, response) => {

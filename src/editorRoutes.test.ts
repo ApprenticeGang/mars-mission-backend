@@ -1,13 +1,15 @@
 ﻿import supertest from "supertest";
-import {app} from "./app";
-import {mocked} from "ts-jest/utils";
+import { app } from "./app";
+import { mocked } from "ts-jest/utils";
 import * as editors from "./database/editors";
 import * as timeline from "./database/timeline";
 import * as articles from "./database/articles";
+import * as images from "./database/images";
 
 jest.mock("./database/editors");
 jest.mock("./database/timeline");
 jest.mock("./database/articles");
+jest.mock("./database/images");
 
 const request = supertest(app);
 
@@ -17,29 +19,30 @@ const mockGetEditors = mocked(editors.getEditors);
 const mockDeleteEditor = mocked(editors.deleteEditorById);
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockInsertArticle = mocked(articles.insertArticle);
+const mockInsertImage = mocked(images.addNewImage);
 
-const testEditor = { 
-    id: 10, 
-    email: "john4.doe@gmail.com", 
-    salt: "yhzvD1+chPZCfg==", 
+const testEditor = {
+    id: 10,
+    email: "john4.doe@gmail.com",
+    salt: "yhzvD1+chPZCfg==",
     hashed_password: "YEYWeCNALZFGtzyzkxXDVTR6ev6qpNJrrSvMmoWiCyQ="
 };
 
 describe("admin routes", () => {
-    
+
     describe("home", () => {
-        
+
         it("GET returns 200", async done => {
             const response = await request.get("/admin");
             expect(response.status).toBe(200);
             done();
         });
     });
-    
+
     describe("Editors", () => {
-        
+
         describe("List Editors", () => {
-           
+
             it("GET returns 200", async done => {
                 mockGetEditors.mockResolvedValue([testEditor]);
 
@@ -48,15 +51,15 @@ describe("admin routes", () => {
                 done();
             });
         });
-        
+
         describe("Add New Editor", () => {
-            
+
             it("GET returns 200", async done => {
                 const response = await request.get("/admin/editors/new");
                 expect(response.status).toBe(200);
                 done();
             });
-            
+
             it("POST returns 200 if data is valid", async done => {
                 mockInsertEditor.mockReturnValue(Promise.resolve());
                 const response = await request
@@ -67,7 +70,7 @@ describe("admin routes", () => {
                 expect(response.header.location).toBe("/admin/editors");
                 done();
             });
-            
+
             it("POST fails (400) if email is missing", async done => {
                 const response = await request
                     .post('/admin/editors/new')
@@ -90,21 +93,21 @@ describe("admin routes", () => {
         });
 
         describe("Delete Editor", () => {
-        
+
             it("POST succeeds if editor exists", async done => {
                 mockDeleteEditor.mockResolvedValue();
-                
+
                 const response = await request.post("/admin/editors/1/delete");
-                
+
                 expect(response.status).toBe(302);
                 expect(response.header.location).toBe("/admin/editors");
                 done();
             });
         });
     });
-    
+
     describe("Sign In", () => {
-        
+
         it("GET returns 200", async done => {
             const response = await request.get("/admin/sign-in");
             expect(response.status).toBe(200);
@@ -165,31 +168,52 @@ describe("admin routes", () => {
             done();
         });
     });
-    
-    describe("Articles", () => {
 
-        describe("Add new Article", () => {
+    describe("Images", () => {
+        describe("Add new Image", () => {
 
             it("GET returns 200", async done => {
-                const response = await request.get("/admin/articles/new");
+                const response = await request.get("/admin/rovers/:roverName/images");
                 expect(response.status).toBe(200);
                 done();
             });
 
             it("POST returns 200", async done => {
-                mockInsertArticle.mockResolvedValue();
+                mockInsertImage.mockResolvedValue();
                 const response = await request
-                    .post('/admin/articles/new')
-                    .send("imageUrl=imageUrl&title=title&summary=summary&articleUrl=articleUrl&publishDate=publishDate")
+                    .post('/admin/rovers/:roverName/images')
+                    .send("image_url=imageUrl&rover_name=roverName&date=date")
                     .set("Accept", "x-www-form-urlencoded");
                 expect(response.status).toBe(200);
                 done();
             });
         });
     });
-    
+
+    describe("Articles", () => {
+
+            describe("Add new Article", () => {
+
+                it("GET returns 200", async done => {
+                    const response = await request.get("/admin/articles/new");
+                    expect(response.status).toBe(200);
+                    done();
+                });
+
+                it("POST returns 200", async done => {
+                    mockInsertArticle.mockResolvedValue();
+                    const response = await request
+                        .post('/admin/articles/new')
+                        .send("imageUrl=imageUrl&title=title&summary=summary&articleUrl=articleUrl&publishDate=publishDate")
+                        .set("Accept", "x-www-form-urlencoded");
+                    expect(response.status).toBe(200);
+                    done();
+                });
+            });
+        });
+
     describe("Timelines", () => {
-        
+
         describe("Add new Timeline Item", () => {
 
             it("GET returns 200", async done => {
@@ -197,7 +221,7 @@ describe("admin routes", () => {
                 expect(response.status).toBe(200);
                 done();
             });
-            
+
             it("POST returns 200", async done => {
                 mockInsertTimelineItem.mockResolvedValue();
                 const response = await request
