@@ -51,6 +51,7 @@ nunjucks.configure(pathToTemplates, {
 
 const localStrategy = passportLocal.Strategy;
 app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new localStrategy({
     usernameField: 'email',
     passwordField: 'password'
