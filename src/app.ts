@@ -75,8 +75,9 @@ app.get("/home", (request, response) => {
     if (!request.user) {
         return response.redirect("/admin/sign-in")
     }
-    return response.render('index.html');
+    else {response.render('index.html')};
 });
+
 app.use('/api', apiRoutes);
 
 app.use('/admin', editorRoutes);

@@ -22,6 +22,8 @@ router.get("/editors/new", (request, response) => {
     return response.render('adminEditor.html');
 });
 
+
+
 router.post("/editors/new", async (request, response) => {
     const { email, password } = request.body as NewEditorRequest;
     if (!email || email === "") {
@@ -33,14 +35,7 @@ router.post("/editors/new", async (request, response) => {
 
     await createEditor(email, password);
     return response.send("okay");
+
 });
-
-// router.get("/admin/", async (request, response) => {
-//     // console.log(request.user)
-//     if (!request.user) {
-//         return response.redirect("/admin/sign-in")
-//     }
-// });
-
 
 export { router };
