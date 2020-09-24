@@ -9,6 +9,9 @@ import passport from "passport";
 import {deleteEditorById, getEditors} from "./database/editors";
 
 const router = express.Router();
+router.get("/home", (request,response) =>{
+    response.render('home.html')
+});
 
 router.get("", (request, response) => {
     response.render('index.html');
@@ -19,7 +22,7 @@ router.get("/sign-in", (request, response) => {
 });
 
 router.post("/sign-in", passport.authenticate('local', {
-    successRedirect: '/home',
+    successRedirect: '/admin/home',
     failureRedirect: '/admin/sign-in',
 }));
 
