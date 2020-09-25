@@ -36,3 +36,8 @@ export const insertArticle = async (newArticle: NewArticle): Promise<void> => {
         .into<Article>('news');
 };
 
+export const deleteArticle = async (id: number): Promise<void> => {
+    await db<Article>("news")
+        .delete()
+        .where("id", id);
+};
