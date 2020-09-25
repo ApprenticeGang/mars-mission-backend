@@ -1,6 +1,6 @@
 ﻿import express from "express";
 import {deleteTimelineItemById, insertTimelineItem, NewTimelineItem} from "../database/timeline";
-import {deletePhotoById} from "../database/photos";
+import {deletePhotoById, insertImage, NewImage} from "../database/photos";
 import {requireSignIn} from "../helpers/authHelper";
 
 const router = express.Router();
@@ -31,6 +31,18 @@ router.post("/:name/timeline/:id/delete", requireSignIn(async(request, response)
     await deleteTimelineItemById(id);
 
     return response.redirect(`/admin/rovers/${rover}`);
+}));
+
+router.get("/:name/images/new", requireSignIn(async (request, response) => {
+    const roverName = request.params.name;
+    response.render("addRoverImage.html", { roverName });
+}));
+
+router.post("/:name/images/new", requireSignIn(async (request, response) => {
+    const newImage = request.body as NewImage;
+    const roverName = request.params.name;
+    await insertImage(newImage, roverName);
+    response.redirect(`/admin/rovers/${roverName}`);
 }));
 
 router.post("/:name/images/:id/delete", requireSignIn(async(request, response) => {

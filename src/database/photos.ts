@@ -1,19 +1,29 @@
 import {db} from "./database";
-import {PhotoApiData} from "../nasa/nasaApiClient";
 
-export const getPhotoById = async (id: number, roverName: string): Promise<PhotoApiData> => {
-    return db()
-        .select("*")
-        .from("images")
-        .where("id", id)
-        .andWhere("rover_name", roverName)
-        .first();
+export interface Image {
+    id: number;
+    image_url: string;
+    rover_name: string;
+    date: string;
+}
+
+export interface NewImage {
+    imageUrl: string;
+    date: string;
+}
+
+export const insertImage = async (newImage: NewImage, roverName: string) => {
+    await db<Image>("images")
+        .insert({
+            image_url: newImage.imageUrl,
+            rover_name: roverName,
+            date: newImage.date,
+        });
 };
 
 export const deletePhotoById = async (id: number): Promise<void> => {
     await db()
         .delete()
-        .from<PhotoApiData>("images")
+        .from<Image>("images")
         .where("id", id);
-
 };

@@ -53,6 +53,21 @@ describe("Rover Routes", () => {
             expectRejectedAuth(response);
             done();
         });
+        
+        it("rejects GET requests to the add image page", async done => {
+            const response = await request.get("/admin/rovers/spirit/images/new");
+            expectRejectedAuth(response);
+            done();
+        });
+
+        it("rejects POST requests to the add image page", async done => {
+            const response = await request
+                .post("/admin/rovers/spirit/images/new")
+                .send("imageUrl=http://test-image")
+                .set("Accept", "x-www-form-urlencoded");
+            expectRejectedAuth(response);
+            done();
+        });
 
         it ("rejects POST requests to delete image page", async done => {
             mockDeleteImageItem.mockResolvedValue();
@@ -109,6 +124,23 @@ describe("Rover Routes", () => {
             const response = await request
                 .post('/admin/rovers/spirit/timeline/1/delete')
                 .set("Cookie", [sessionCookie]);
+            expect(response.status).toBe(302);
+            expect(response.headers.location).toBe("/admin/rovers/spirit");
+            done();
+        });
+
+        it("accepts GET requests to the add image page", async done => {
+            const response = await request.get("/admin/rovers/spirit/images/new").set("Cookie", [sessionCookie]);
+            expect(response.status).toBe(200);
+            done();
+        });
+
+        it("accepts POST requests to the add image page", async done => {
+            const response = await request
+                .post("/admin/rovers/spirit/images/new")
+                .send("imageUrl=http://test-image")
+                .set("Cookie", [sessionCookie])
+                .set("Accept", "x-www-form-urlencoded");
             expect(response.status).toBe(302);
             expect(response.headers.location).toBe("/admin/rovers/spirit");
             done();
