@@ -3,7 +3,7 @@
 {% block content %}
 
 <section>
-<form method="POST" action="/admin/rovers/timeline/new" class="manage">
+<form method="POST" action="/admin/rovers/{{ roverName }}/timeline/new" class="manage">
     <h2>Add Timeline Event </h2>
 
     <label for="rover_name">Rover Name</label>
@@ -15,8 +15,8 @@
     <label for="heading">Heading</label>
     <input id="heading" type="text" name="heading" required/>
 
-    <label for="timeline_entry">Timeline Entry</label>
-    <input id="timeline_entry" type="text" name="timelineEntry" required/>
+    <label for="timeline_entry">Body</label>
+    <input id="timeline_entry" type="text" name="body" required/>
 
     <label for="date">Date</label>
     <input id="date" type="date" name="date" required/>

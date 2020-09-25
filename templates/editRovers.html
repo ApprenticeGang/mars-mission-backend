@@ -1,7 +1,46 @@
 {% extends "_base.html" %}
 {% block content %}
 <section>
-        <h2>Edit Rovers</h2>
-        <br>
+        <div class="card">
+                <h2>{{ roverName }}</h2>
+                
+                <div class="segment">
+                        <h3>Editorial Images</h3>
+                        
+                        <ul>
+                        {% for image in images %}
+                                <li>
+                                        <img src="{{ image.image_url }}" alt=""/>
+                                        <div>Date: {{ image.date }}</div>
+                                        <form method="post" action="/admin/rovers/{{ roverName }}/images/{{ image.id }}/delete">
+                                                <button type="submit">Delete</button>
+                                        </form>
+                                </li>
+                        {% endfor %}
+                        </ul>
+                        
+                        <a href="/admin/rovers/{{ roverName }}/images/new">Add another image</a>
+                </div>
+
+                <div class="segment">
+                        <h3>Rover Timeline</h3>
+                
+                        <ul>
+                                {% for entry in timeline %}
+                                <li>
+                                        <img src="{{ entry.image_url }}" alt=""/>
+                                        <div>Header: {{ entry.heading }}</div>
+                                        <div>Body: {{ entry.timeline_entry }}</div>
+                                        <div>Date: {{ entry.date }}</div>
+                                        <form method="post" action="/admin/rovers/{{ roverName }}/timeline/{{ entry.id }}/delete">
+                                                <button type="submit">Delete</button>
+                                        </form>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                        
+                        <a href="/admin/rovers/{{ roverName }}/timeline/new">Add another entry</a>
+                </div>
+        </div>
 </section>
 {% endblock %}

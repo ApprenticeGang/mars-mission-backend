@@ -1,7 +1,8 @@
 ﻿import express from "express";
-import {deleteTimelineItemById, insertTimelineItem, NewTimelineItem} from "../database/timeline";
-import {deletePhotoById, insertImage, NewImage} from "../database/photos";
+import {deleteTimelineItemById, getTimelineForRover, insertTimelineItem, NewTimelineItem} from "../database/timeline";
+import {deletePhotoById, getImagesForRover, insertImage, NewImage} from "../database/photos";
 import {requireSignIn} from "../helpers/authHelper";
+import {RoverName} from "../models/requestModels";
 
 const router = express.Router();
 
@@ -9,12 +10,17 @@ router.get("", requireSignIn((request, response) => {
     response.render('rovers.html');
 }));
 
-router.get("/:name", requireSignIn((request, response) => {
-    response.render('editRovers.html');
+router.get("/:name", requireSignIn(async (request, response) => {
+    const roverName = request.params.name as RoverName;
+    const images = await getImagesForRover(roverName);
+    const timeline = await getTimelineForRover(roverName);
+    
+    response.render('editRovers.html', { roverName, images, timeline });
 }));
 
 router.get("/:name/timeline/new", requireSignIn((request, response) => {
-    return response.render('adminAddTimeline.html');
+    const roverName = request.params.name as RoverName;
+    return response.render('adminAddTimeline.html', { roverName });
 }));
 
 router.post("/:name/timeline/new", requireSignIn(async (request, response) => {

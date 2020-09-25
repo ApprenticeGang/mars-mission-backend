@@ -9,7 +9,9 @@ jest.mock("../database/timeline");
 jest.mock("../database/photos");
 const mockInsertTimelineItem = mocked(timeline.insertTimelineItem);
 const mockDeleteTimelineItem = mocked(timeline.deleteTimelineItemById);
+const mockGetTimelineForRover = mocked(timeline.getTimelineForRover);
 const mockDeleteImageItem = mocked(photos.deletePhotoById);
+const mockGetImagesForRover = mocked(photos.getImagesForRover);
 
 const request = supertest(app);
 
@@ -31,6 +33,8 @@ describe("Rover Routes", () => {
         });
 
         it("rejects GET requests to add timeline event page", async done => {
+            mockGetTimelineForRover.mockResolvedValue([]);
+            mockGetImagesForRover.mockResolvedValue([]);
             const response = await request.get("/admin/rovers/spirit/timeline/new");
             expectRejectedAuth(response);
             done();

@@ -4,7 +4,7 @@ import { QueryBuilder } from "knex";
 
 export interface TimelineItem {
     id: number;
-    rover_name: RoverName;
+    rover_name: string;
     image_url: string | null;
     heading: string;
     timeline_entry: string;
