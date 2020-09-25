@@ -18,10 +18,11 @@ export const signIn = async (request: supertest.SuperTest<supertest.Test>): Prom
         .post('/admin/sign-in')
         .send("email=email&password=password4")
         .set("Accept", "x-www-form-urlencoded");
-    return response.headers['set-cookie'][0]
-}
+    // eslint-disable-next-line
+    return response.headers['set-cookie'][0];
+};
 
 export const expectRejectedAuth = (response: supertest.Response): void => {
     expect(response.status).toBe(302);
     expect(response.headers.location).toBe("/admin/sign-in");
-}
+};

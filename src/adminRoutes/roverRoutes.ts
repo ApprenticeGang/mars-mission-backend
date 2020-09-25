@@ -5,12 +5,11 @@ import {requireSignIn} from "../helpers/authHelper";
 
 const router = express.Router();
 
-router.get("", requireSignIn(async (request, response) => {
+router.get("", requireSignIn((request, response) => {
     response.render('rovers.html');
 }));
 
-router.get("/:name", requireSignIn(async (request, response) => {
-    const name = request.params.name
+router.get("/:name", requireSignIn((request, response) => {
     response.render('editRovers.html');
 }));
 
@@ -27,13 +26,13 @@ router.post("/:name/timeline/new", requireSignIn(async (request, response) => {
 
 router.post("/:name/timeline/:id/delete", requireSignIn(async(request, response) => {
     const id = parseInt(request.params.id);
-    const rover = request.params.name
+    const rover = request.params.name;
     await deleteTimelineItemById(id);
 
     return response.redirect(`/admin/rovers/${rover}`);
 }));
 
-router.get("/:name/images/new", requireSignIn(async (request, response) => {
+router.get("/:name/images/new", requireSignIn((request, response) => {
     const roverName = request.params.name;
     response.render("addRoverImage.html", { roverName });
 }));
@@ -47,7 +46,7 @@ router.post("/:name/images/new", requireSignIn(async (request, response) => {
 
 router.post("/:name/images/:id/delete", requireSignIn(async(request, response) => {
     const id = parseInt(request.params.id);
-    const rover = request.params.name
+    const rover = request.params.name;
     await deletePhotoById(id);
 
     return response.redirect(`/admin/rovers/${rover}`);

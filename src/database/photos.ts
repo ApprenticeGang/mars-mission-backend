@@ -12,7 +12,7 @@ export interface NewImage {
     date: string;
 }
 
-export const insertImage = async (newImage: NewImage, roverName: string) => {
+export const insertImage = async (newImage: NewImage, roverName: string): Promise<void> => {
     await db<Image>("images")
         .insert({
             image_url: newImage.imageUrl,

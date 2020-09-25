@@ -18,25 +18,25 @@ let sessionCookie = "";
 describe("Rover Routes", () => {
 
     describe("When not logged in", () => {
-        it ("rejects GET requests to list rovers page", async done => {
+        it("rejects GET requests to list rovers page", async done => {
             const response = await request.get("/admin/rovers");
             expectRejectedAuth(response);
             done();
         });
 
-        it ("rejects GET requests to rover page", async done => {
+        it("rejects GET requests to rover page", async done => {
             const response = await request.get("/admin/rovers/spirit");
             expectRejectedAuth(response);
             done();
         });
 
-        it ("rejects GET requests to add timeline event page", async done => {
+        it("rejects GET requests to add timeline event page", async done => {
             const response = await request.get("/admin/rovers/spirit/timeline/new");
             expectRejectedAuth(response);
             done();
         });
 
-        it ("rejects POST requests to add timeline event page", async done => {
+        it("rejects POST requests to add timeline event page", async done => {
             mockInsertTimelineItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/timeline/new')
@@ -46,7 +46,7 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("rejects POST requests to delete timeline event page", async done => {
+        it("rejects POST requests to delete timeline event page", async done => {
             mockDeleteTimelineItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/timeline/1/delete');
@@ -69,7 +69,7 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("rejects POST requests to delete image page", async done => {
+        it("rejects POST requests to delete image page", async done => {
             mockDeleteImageItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/images/1/delete');
@@ -84,7 +84,7 @@ describe("Rover Routes", () => {
             sessionCookie = await signIn(request);
         });
 
-        it ("accepts GET requests to list rovers page", async done => {
+        it("accepts GET requests to list rovers page", async done => {
             console.log("sessionCookie", sessionCookie);
             const response = await request
                 .get("/admin/rovers")
@@ -93,13 +93,13 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("accepts GET requests to rover page", async done => {
+        it("accepts GET requests to rover page", async done => {
             const response = await request.get("/admin/rovers/spirit").set("Cookie", [sessionCookie]);
             expect(response.status).toBe(200);
             done();
         });
 
-        it ("accepts GET requests to add timeline event page", async done => {
+        it("accepts GET requests to add timeline event page", async done => {
             const response = await request
                 .get('/admin/rovers/spirit/timeline/new')
                 .set("Cookie", [sessionCookie]);
@@ -107,7 +107,7 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("accepts POST requests to add timeline event page", async done => {
+        it("accepts POST requests to add timeline event page", async done => {
             mockInsertTimelineItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/timeline/new')
@@ -119,7 +119,7 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("accepts POST requests to delete timeline event", async done => {
+        it("accepts POST requests to delete timeline event", async done => {
             mockDeleteTimelineItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/timeline/1/delete')
@@ -146,7 +146,7 @@ describe("Rover Routes", () => {
             done();
         });
 
-        it ("accepts POST requests to delete Image", async done => {
+        it("accepts POST requests to delete Image", async done => {
             mockDeleteImageItem.mockResolvedValue();
             const response = await request
                 .post('/admin/rovers/spirit/images/1/delete')

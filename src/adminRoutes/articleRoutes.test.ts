@@ -15,13 +15,13 @@ describe("Article Routes", () => {
 
     describe("When not logged in", () => {
         
-        it ("rejects GET requests to new article page", async done => {
+        it("rejects GET requests to new article page", async done => {
             const response = await request.get("/admin/articles/new");
             expectRejectedAuth(response);
             done();
         });
 
-        it ("rejects POST requests to new article page", async done => {
+        it("rejects POST requests to new article page", async done => {
             mockInsertArticle.mockResolvedValue();
             const response = await request
                 .post('/admin/articles/new')
@@ -39,7 +39,7 @@ describe("Article Routes", () => {
             sessionCookie = await signIn(request);
         });
 
-        it ("allows GET requests to new article page", async done => {
+        it("allows GET requests to new article page", async done => {
             const response = await request
                 .get("/admin/articles/new")
                 .set("Cookie", [sessionCookie]);
@@ -47,7 +47,7 @@ describe("Article Routes", () => {
             done();
         });
 
-        it ("allows POST requests to new article page", async done => {
+        it("allows POST requests to new article page", async done => {
             mockInsertArticle.mockResolvedValue();
             const response = await request
                 .post('/admin/articles/new')

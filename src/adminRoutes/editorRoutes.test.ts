@@ -15,7 +15,7 @@ let sessionCookie = "";
 describe("Editor Routes", () => {
 
     describe("When not logged in", () => {
-        it ("rejects GET requests to list editors page", async done => {
+        it("rejects GET requests to list editors page", async done => {
             mockGetEditors.mockResolvedValue([testEditor]);
             const response = await request
                 .get("/admin/editors/");
@@ -23,13 +23,13 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("rejects GET requests to new editor page", async done => {
+        it("rejects GET requests to new editor page", async done => {
             const response = await request.get("/admin/editors/new");
             expectRejectedAuth(response);
             done();
         });
 
-        it ("rejects POST requests to new editor page", async done => {
+        it("rejects POST requests to new editor page", async done => {
             mockInsertEditor.mockResolvedValue();
             const response = await request
                 .get("/admin/editors/new")
@@ -38,7 +38,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("rejects POST requests to delete editor page", async done => {
+        it("rejects POST requests to delete editor page", async done => {
             mockDeleteEditor.mockResolvedValue();
             const response = await request.post("/admin/editors/1/delete");
             expectRejectedAuth(response);
@@ -52,7 +52,7 @@ describe("Editor Routes", () => {
             sessionCookie = await signIn(request);
         });
 
-        it ("allows GET requests to list editors page", async done => {
+        it("allows GET requests to list editors page", async done => {
             mockGetEditors.mockResolvedValue([testEditor]);
             const response = await request
                 .get("/admin/editors/")
@@ -61,7 +61,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("allows GET requests to new editor page", async done => {
+        it("allows GET requests to new editor page", async done => {
             const response = await request
                 .get("/admin/editors/new")
                 .set("Cookie", [sessionCookie]);
@@ -69,7 +69,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("allows POST requests to new editor page", async done => {
+        it("allows POST requests to new editor page", async done => {
             mockInsertEditor.mockResolvedValue();
             const response = await request
                 .post("/admin/editors/new")
@@ -81,7 +81,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("fails to add new editor if email is missing", async done => {
+        it("fails to add new editor if email is missing", async done => {
             mockInsertEditor.mockResolvedValue();
             const response = await request
                 .post("/admin/editors/new")
@@ -92,7 +92,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("fails to add new editor if password is missing", async done => {
+        it("fails to add new editor if password is missing", async done => {
             mockInsertEditor.mockResolvedValue();
             const response = await request
                 .post("/admin/editors/new")
@@ -103,7 +103,7 @@ describe("Editor Routes", () => {
             done();
         });
 
-        it ("allows POST requests to delete editors", async done => {
+        it("allows POST requests to delete editors", async done => {
             mockDeleteEditor.mockResolvedValue();
 
             const response = await request

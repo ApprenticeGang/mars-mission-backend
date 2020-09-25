@@ -1,5 +1,6 @@
 ﻿import {Request, Response} from "express";
 
+/* eslint-disable */
 export const requireSignIn = (callback: (request: Request, response: Response) => void) => {
     return (request: Request, response: Response) => {
         if (!request.user) {
@@ -7,5 +8,5 @@ export const requireSignIn = (callback: (request: Request, response: Response) =
         } else {
             callback(request, response);
         }
-    }
+    };
 };

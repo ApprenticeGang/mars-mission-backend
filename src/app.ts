@@ -70,7 +70,7 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-exports.restrict
+exports.restrict;
 
 app.get('', async (request, response) => {
     const status = await getStatus();

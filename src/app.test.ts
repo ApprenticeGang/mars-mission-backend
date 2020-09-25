@@ -14,7 +14,6 @@ const mockCheckDatabaseConnection = mocked(database.checkDatabaseConnection);
 const request = supertest(app);
 
 
-
 describe("The status page", () => {
     it("should return OK if can connect to NASA and the Database ", async done => {
         mockGetRovers.mockResolvedValue([]);
