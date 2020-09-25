@@ -1,20 +1,25 @@
 import {getRoverPhotos, getRovers} from "../nasa/nasaApiClient";
+import {getImagesForRover} from "../database/photos";
+
+interface CameraDetails {
+    name: string;
+    fullName: string;
+}
+
+interface Rover {
+    name: string;
+    landingDate?: string | undefined;
+    launchDate?: string | undefined;
+    status?: string | undefined;
+}
 
 export interface RoverImage {
     id: number;
-    sol: number;
+    sol?: number | undefined;
     imageUrl: string;
     earthDate: string;
-    cameraDetails: {
-        name: string;
-        fullName: string;
-    };
-    rover: {
-        name: string;
-        landingDate: string;
-        launchDate: string;
-        status: string;
-    };
+    cameraDetails?: CameraDetails | undefined; 
+    rover: Rover;
 }
 
 export const checkNasaApi = async(): Promise<boolean> => {
@@ -29,7 +34,8 @@ export const checkNasaApi = async(): Promise<boolean> => {
 
 export const getRoverImages = async (roverName: string): Promise<RoverImage[]> => {
     const apiImages = await getRoverPhotos(roverName);
-    return apiImages.map(apiImage => { 
+    
+    const apiResults: RoverImage[] = apiImages.map(apiImage => { 
         return {    
             id: apiImage.id,
             sol: apiImage.sol,
@@ -47,5 +53,19 @@ export const getRoverImages = async (roverName: string): Promise<RoverImage[]> =
             }
         };
     });
+
+    const editorImages = await getImagesForRover(roverName);
+    const editorResults: RoverImage[] = editorImages.map(editorImage => {
+        return {
+            id: editorImage.id,
+            imageUrl: editorImage.image_url,
+            earthDate: editorImage.date,
+            rover: {
+                name: roverName
+            }
+        };
+    });
+    
+    return editorResults.concat(apiResults);
 };
 

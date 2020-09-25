@@ -1,5 +1,4 @@
 import {db} from "./database";
-import {RoverName} from "../models/requestModels";
 
 export interface Image {
     id: number;
@@ -13,7 +12,7 @@ export interface NewImage {
     date: string;
 }
 
-export const getImagesForRover = (roverName: RoverName): Promise<Image[]> => {
+export const getImagesForRover = (roverName: string): Promise<Image[]> => {
     return db()
         .select("*")
         .from<Image>("images")
