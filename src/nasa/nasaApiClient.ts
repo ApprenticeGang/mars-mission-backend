@@ -43,8 +43,12 @@ export const getRoverPhotos = async (roverName: string): Promise<PhotoApiData[]>
     const queryParameters = [
         { name: "sol", value: "1" }
     ];
-    const apiData = await get<RoverPhotosApiData>(`/rovers/${roverName}/photos`, queryParameters);
-    return apiData.photos;
+    try {
+        const apiData = await get<RoverPhotosApiData>(`/rovers/${roverName}/photos`, queryParameters);
+        return apiData.photos;
+    } catch {
+        return [];
+    }
 };
 
 const get = async <T>(path: string, queryParameters: QueryParameter[] = []): Promise<T> => {
