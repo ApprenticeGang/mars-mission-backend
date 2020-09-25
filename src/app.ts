@@ -37,8 +37,8 @@ app.use(
 
 app.use(cors({
     origin: [
-        "http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com/",
-        "https://d2000sgepwjw55.cloudfront.net/",
+        "http://mars-mission-integration.s3-website.eu-west-2.amazonaws.com",
+        "https://d2000sgepwjw55.cloudfront.net",
         "http://localhost:3000"
     ]
 }));
