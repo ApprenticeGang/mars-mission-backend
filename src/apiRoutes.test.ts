@@ -6,18 +6,21 @@ import * as nasaApiClient from "./nasa/nasaApiClient";
 import testImageApiData from "./testData/testdata.json";
 import * as articles from "./database/articles";
 import * as timeline from "./database/timeline";
+import * as photos  from "./database/photos";
 import {Article} from "./database/articles";
 import {TimelineItem} from "./database/timeline";
 
 jest.mock("./nasa/nasaApiClient");
 jest.mock("./database/articles");
 jest.mock("./database/timeline");
+jest.mock("./database/photos");
 
 const request = supertest(app);
 
 const mockGetRoverPhotos = mocked(nasaApiClient.getRoverPhotos);
 const mockGetArticles = mocked(articles.getArticles);
 const mockGetTimelineForRover = mocked(timeline.getTimelineForRover);
+const mockGetImagesForRover = mocked(photos.getImagesForRover);
 
 describe("API Routes", () => {
     
@@ -27,14 +30,30 @@ describe("API Routes", () => {
             
             it("should return images from NASA", async (done) => {
                 mockGetRoverPhotos.mockResolvedValue(testImageApiData);
+                mockGetImagesForRover.mockResolvedValue([
+                    {
+                        id: 1,
+                        rover_name: "spirit",
+                        image_url: "http://test-image.com",
+                        date: "2015-05-30"
+                    }
+                ]);
                 
                 const response = await request.get("/api/rovers/spirit/images");
                 
                 expect(response.status).toBe(200);
 
                 const images = response.body as RoverImage[];
-                expect(images.length).toBe(2);
+                expect(images.length).toBe(3);
                 expect(images[0]).toStrictEqual({
+                    id: 1,
+                    imageUrl: "http://test-image.com",
+                    earthDate: "2015-05-30",
+                    rover: {
+                        name: "spirit",
+                    }
+                });
+                expect(images[1]).toStrictEqual({
                     id: 102693,
                     sol: 1000,
                     imageUrl: "http://mars.jpl.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/01000/opgs/edr/fcam/FLB_486265257EDR_F0481570FHAZ00323M_.JPG",
