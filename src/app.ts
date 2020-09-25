@@ -8,10 +8,10 @@ import {getStatus} from "./services/statusService";
 import 'express-async-errors';
 import sassMiddleware from "node-sass-middleware";
 import {router as apiRoutes}  from "./apiRoutes";
-import {router as editorRoutes} from "./editorRoutes";
 import cors from "cors";
 import cookieparser from "cookie-parser";
 import expresssession from "express-session";
+import { router as adminRoutes } from "./adminRoutes/adminRoutes";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -28,7 +28,7 @@ app.use(
     sassMiddleware({
         src: srcPath,
         dest: destPath,
-        debug: true,
+        debug: false,
         outputStyle: 'compressed',
         prefix: '',
     }),
@@ -78,7 +78,7 @@ app.get('', async (request, response) => {
 });
 
 app.use('/api', apiRoutes);
-app.use('/admin', editorRoutes);
+app.use('/admin', adminRoutes);
 
 /* istanbul ignore next */
 /* eslint-disable */
